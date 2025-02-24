@@ -1,3 +1,4 @@
+namespace TriviaCasino.Model;
 public class BlackjackGame : ACardGame {
     Hand dealerHand = new();
     Dictionary<string, int> playerScores = new();
@@ -29,9 +30,9 @@ public class BlackjackGame : ACardGame {
         Status = status;
     }
 
-    private void DealStartingCards() {
+    public override void DealStartingCards() {
         foreach (var player in Players) {
-            PlayerHands[player.Username] = new Hand() {
+            playerHands[player.Username] = new Hand() {
                 deck.DrawCard(),
                 deck.DrawCard()
             };
@@ -40,27 +41,27 @@ public class BlackjackGame : ACardGame {
     }
 
     private void DetermineScore(string username) {
-        Hand playerHand = playerHands.get(username);
+        if (playerHands.TryGetValue(username, out Hand? playerHand)) {
+            int score = 0, aceCount = 0;
+            foreach (Card card in playerHand) {
+                score += card.value;
 
-        if (playerHand == null) {
+                if (card.rank == "A") {
+                    aceCount++;
+                }
+            }
+
+            //In Blackjack, Aces can count for either a 1 or 11.  If the player's score goes over 21, subtract 10 from that score if they have an Ace to count it as a 1.
+            while (score > 21 && aceCount > 0) {
+                score -= 10;
+                aceCount--;
+            }
+
+            playerScores[username] = score;
+            }
+        else
+        {
             throw new InvalidOperationException("Hand does not exist for player " + username);
         }
-
-        int score = 0, aceCount = 0;
-        foreach (Card card in playerHand) {
-            score += card.value;
-
-            if (card.rank == "A") {
-                aceCount++;
-            }
-        }
-
-        //In Blackjack, Aces can count for either a 1 or 11.  If the player's score goes over 21, subtract 10 from that score if they have an Ace to count it as a 1.
-        while (score > 21 && aceCount > 0) {
-            score -= 10;
-            aceCount--;
-        }
-
-        playerScores[username] = score;
     }
 }

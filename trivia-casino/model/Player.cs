@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+namespace TriviaCasino.Model;
 
 public class Player {
     [Key]

@@ -1,3 +1,4 @@
+namespace TriviaCasino.Model;
 public class Deck {
     public Stack<Card> cards = new();
     public DeckType deckType;
@@ -14,11 +15,15 @@ public class Deck {
     }
 
     public void ShuffleDeck() {
+        List<Card> cardList = cards.ToList();
         Random rng = new Random();
-        for (int i = cards.Count - 1; i > 0; i--) {
+
+        for (int i = cardList.Count - 1; i > 0; i--) {
             int j = rng.Next(i + 1);
-            (cards[i], cards[j]) = (cards[j], cards[i]);
+            (cardList[i], cardList[j]) = (cardList[j], cardList[i]);
         }
+
+        cards = new Stack<Card>(cardList);
     }
 
     public Deck CreateStandardDeck() {

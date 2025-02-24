@@ -1,3 +1,4 @@
+namespace TriviaCasino.Model;
 public class Card {
     public int value;
     public string rank = "";
