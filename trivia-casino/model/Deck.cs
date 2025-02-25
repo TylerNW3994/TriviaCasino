@@ -5,7 +5,10 @@ public class Deck {
 
     public Deck ShuffleNewDeck() {
         switch(deckType) {
-            case DeckType.STANDARD: 
+            case DeckType.STANDARD:
+                CreateStandardDeck();
+                break;
+            default:
                 CreateStandardDeck();
                 break;
         }
