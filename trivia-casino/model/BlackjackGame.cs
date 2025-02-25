@@ -3,7 +3,7 @@ public class BlackjackGame : ACardGame {
     Hand dealerHand = new();
     Dictionary<string, int> playerScores = new();
 
-    string currentPlayer = "";
+    // string currentPlayer = "";
 
     public void Initialize() {
         deck.deckType = DeckType.STANDARD;
