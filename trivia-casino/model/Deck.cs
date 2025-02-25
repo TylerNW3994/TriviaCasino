@@ -52,7 +52,6 @@ public class Deck {
     }
 
     private Dictionary<int, List<string>> STANDARD_DECK_CARDS = new Dictionary<int, List<string>> {
-        { 1, new List<string> { "1" } },
         { 2, new List<string> { "2" } },
         { 3, new List<string> { "3" } },
         { 4, new List<string> { "4" } },
