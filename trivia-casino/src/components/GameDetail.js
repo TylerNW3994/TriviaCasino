@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function GameDetail() {
   const { gameName } = useParams();
@@ -6,7 +6,9 @@ function GameDetail() {
   return (
     <div>
       <h2>{gameName.toUpperCase()}</h2>
-      <button>Learn how to play {gameName}</button>
+      <Link to={`/howtoplay/${gameName}`}>
+        <button>Learn how to play {gameName}</button>
+      </Link>
     </div>
 
     // Implement games list here
