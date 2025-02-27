@@ -3,6 +3,7 @@ import './App.css';
 import Home from './components/Home';
 import Games from './components/Games';
 import GameDetail from './components/GameDetail';
+import HowToPlay from './components/HowToPlay';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/games" element={<Games />} />
         <Route path="/games/:gameName" element={<GameDetail />} />
+        <Route path="/howtoplay/:gameName" element={<HowToPlay />} />
       </Routes>
     </div>
   </Router>
