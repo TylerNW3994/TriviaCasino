@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 
 function Games() {
   const gamesList = [
-    { id: 'blackjack', name: 'Blackjack' },
-    { id: 'poker', name: 'Poker' }
+    { name: 'blackjack', label: 'Blackjack' },
+    { name: 'poker', label: 'Poker' }
   ];
 
   return (
@@ -12,7 +12,7 @@ function Games() {
       <ul>
         {gamesList.map((game) => (
           <li key={game.id}>
-            <Link to={`/games/${game.id}`}>{game.name}</Link>
+            <Link to={`/games/${game.name }`}>{game.label}</Link>
           </li>
         ))}
       </ul>
