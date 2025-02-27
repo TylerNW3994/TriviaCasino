@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import logo from './logo.svg';
 import './App.css';
 import Home from './components/Home';
 import Games from './components/Games';
+import GameDetail from './components/GameDetail';
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/games" element={<Games />} />
-          {/* <Route path=":gameId" element={<GameDetail />} /> */}
+        <Route path="/games/:gameName" element={<GameDetail />} />
       </Routes>
     </div>
   </Router>
