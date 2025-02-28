@@ -11,7 +11,7 @@ function Games() {
       <h1>Games Lobby</h1>
       <ul>
         {gamesList.map((game) => (
-          <li key={game.id}>
+          <li key={game.name}>
             <Link to={`/games/${game.name }`}>{game.label}</Link>
           </li>
         ))}
