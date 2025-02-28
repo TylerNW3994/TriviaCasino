@@ -12,11 +12,14 @@ export default function Blackjack() {
     setGameState(data);
   }
 
-  async function handleHit() {
+  async function handleHit(username) {
     const response = await fetch('/api/blackjack/hit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(gameState),
+      body: JSON.stringify({
+        gameState,
+        username: username
+      }),
     });
     const data = await response.json();
     setGameState(data);
@@ -25,7 +28,7 @@ export default function Blackjack() {
   return (
     <div>
       <button onClick={startNewGame}>New Game</button>
-      <button onClick={handleHit}>Hit</button>
+      <button onClick={() => handleHit(gameState.currentPlayer)}>Hit</button>
       {/* Render gameState or do whatever you need to do */}
       {gameState.Players && (
         <div>
