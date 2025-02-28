@@ -2,6 +2,7 @@ namespace TriviaCasino.Model;
 public class BlackjackGame : ACardGame {
     Hand dealerHand = new();
     Dictionary<string, int> playerScores = new();
+    private Dictionary<string, Hand> playerSplitHands = new();
 
     // string currentPlayer = "";
 
@@ -23,7 +24,14 @@ public class BlackjackGame : ACardGame {
 
     public void Hit(string username) {
         Card card = deck.DrawCard();
-        DetermineScore(username);
+
+        if (playerHands.TryGetValue(username, out Hand? playerHand)) {
+            playerHand.Add(card);
+            DetermineScore(username, playerHand);
+        }
+        else {
+            throw new InvalidOperationException("Hand does not exist for player " + username);
+        }
     }
 
     public void SetStatus(GameState status) {
@@ -40,8 +48,7 @@ public class BlackjackGame : ACardGame {
         }
     }
 
-    private void DetermineScore(string username) {
-        if (playerHands.TryGetValue(username, out Hand? playerHand)) {
+    private void DetermineScore(string username, Hand playerHand) {
             int score = 0, aceCount = 0;
             foreach (Card card in playerHand) {
                 score += card.value;
@@ -58,9 +65,12 @@ public class BlackjackGame : ACardGame {
             }
 
             playerScores[username] = score;
-            }
-        else
-        {
+    }
+
+    private void DetermineScore(string username) {
+        if (playerHands.TryGetValue(username, out Hand? playerHand)) {
+            DetermineScore(username, playerHand);
+        } else {
             throw new InvalidOperationException("Hand does not exist for player " + username);
         }
     }
