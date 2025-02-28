@@ -13,7 +13,7 @@ const blackjackRules = <section>
 </ul>
 </section>
 
-function GameDetail() {
+function HowToPlay() {
   const { gameName } = useParams();
 
   const gameRules = rules[gameName.toLowerCase()] || <p>No rules found for this game.</p>
@@ -30,4 +30,4 @@ const rules = {
   blackjack: blackjackRules
 }
 
-export default GameDetail;
+export default HowToPlay;
