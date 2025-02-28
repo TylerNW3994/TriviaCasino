@@ -15,6 +15,10 @@ public class BlackjackGame : ACardGame {
     }
 
     public void NextPlayer() {
+        // Go through all the players
+        // When you get to the end of the list,
+        // Determine the dealer's score,
+        // If the dealer busts, all the players win.
         
     }
 
