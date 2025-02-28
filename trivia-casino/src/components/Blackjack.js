@@ -5,7 +5,7 @@ function Blackjack () {
 
   return (
     <div>
-      <h2>Add Blackjack functionality here</h2>
+      <h2>Blackjack</h2>
     </div>
   );
 }
