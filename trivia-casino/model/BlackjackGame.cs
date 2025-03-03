@@ -18,8 +18,7 @@ public class BlackjackGame : ACardGame {
         // Go through all the players
         // When you get to the end of the list,
         // Determine the dealer's score,
-        // If the dealer busts, all the players win.
-        
+        // If the dealer busts, all the players win. 
     }
 
     public override void DetermineWinner() {
@@ -53,22 +52,22 @@ public class BlackjackGame : ACardGame {
     }
 
     private void DetermineScore(string username, Hand playerHand) {
-            int score = 0, aceCount = 0;
-            foreach (Card card in playerHand) {
-                score += card.value;
+        int score = 0, aceCount = 0;
+        foreach (Card card in playerHand) {
+            score += card.value;
 
-                if (card.rank == "A") {
-                    aceCount++;
-                }
+            if (card.rank == "A") {
+                aceCount++;
             }
+        }
 
-            //In Blackjack, Aces can count for either a 1 or 11.  If the player's score goes over 21, subtract 10 from that score if they have an Ace to count it as a 1.
-            while (score > 21 && aceCount > 0) {
-                score -= 10;
-                aceCount--;
-            }
+        //In Blackjack, Aces can count for either a 1 or 11.  If the player's score goes over 21, subtract 10 from that score if they have an Ace to count it as a 1.
+        while (score > 21 && aceCount > 0) {
+            score -= 10;
+            aceCount--;
+        }
 
-            playerScores[username] = score;
+        playerScores[username] = score;
     }
 
     private void DetermineScore(string username) {
