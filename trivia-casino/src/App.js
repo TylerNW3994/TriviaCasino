@@ -4,24 +4,29 @@ import Home from './components/Home';
 import Games from './components/Games';
 import GameDetail from './components/GameDetail';
 import HowToPlay from './components/HowToPlay';
+import Play from './components/Play';
+import { GameSessionProvider } from './components/GameSessionProvider';
 
 function App() {
   return (
-    <Router>
-    <div className="App">
-      <nav className="App-nav">
-        <Link to="/">Home</Link>
-        <Link to="/games">Games</Link>
-      </nav>
+    <GameSessionProvider>
+      <Router>
+        <div className="App">
+          <nav className="App-nav">
+            <Link to="/">Home</Link>
+            <Link to="/games">Games</Link>
+          </nav>
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/games" element={<Games />} />
-        <Route path="/games/:gameName" element={<GameDetail />} />
-        <Route path="/howtoplay/:gameName" element={<HowToPlay />} />
-      </Routes>
-    </div>
-  </Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/games" element={<Games />} />
+            <Route path="/games/:gameName" element={<GameDetail />} />
+            <Route path="/howtoplay/:gameName" element={<HowToPlay />} />
+            <Route path="/play/:gameName" element={<Play />} />
+          </Routes>
+        </div>
+      </Router>
+    </GameSessionProvider>
   );
 }
 
