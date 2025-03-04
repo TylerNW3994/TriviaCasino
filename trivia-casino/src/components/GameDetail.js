@@ -15,7 +15,6 @@ function GameDetail() {
     </div>
 
     // Implement games list here
-    // Create new Game button
   );
 }
 

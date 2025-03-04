@@ -81,7 +81,6 @@ export default function Blackjack() {
     <div>
       {gameState && (
         <div>
-          
           {playerActionButtons}
           {/* Render gameState or do whatever you need to do */}
           {gameState.Players && (

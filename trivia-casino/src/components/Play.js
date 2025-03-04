@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import Blackjack from './Blackjack';
 
 const gameComponents = {
-    blackjack: Blackjack,
-  };
+  blackjack: Blackjack,
+};
 
 function Play() {
   const { gameName } = useParams();
