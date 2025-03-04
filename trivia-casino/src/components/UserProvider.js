@@ -4,7 +4,6 @@ import axios from 'axios';
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  // Initialize state from localStorage
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : null;
@@ -19,16 +18,13 @@ export const UserProvider = ({ children }) => {
     }
   }, [token]);
 
-  // Login function to set token and user data
   const login = (userData) => {
-    // Assuming userData contains both a token and a currentPlayer object
     setToken(userData.token);
     setUser(userData.currentPlayer);
     localStorage.setItem('token', userData.token);
     localStorage.setItem('user', JSON.stringify(userData.currentPlayer));
   };
 
-  // Logout function to clear state and localStorage
   const logout = () => {
     setToken(null);
     setUser(null);
