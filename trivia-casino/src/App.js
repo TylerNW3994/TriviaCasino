@@ -6,6 +6,8 @@ import GameDetail from './components/GameDetail';
 import HowToPlay from './components/HowToPlay';
 import Play from './components/Play';
 import { GameSessionProvider } from './components/GameSessionProvider';
+import ProtectedRoute from './components/ProtectedRoute';
+import Login from './components/Login';
 
 function App() {
   return (
@@ -22,7 +24,13 @@ function App() {
             <Route path="/games" element={<Games />} />
             <Route path="/games/:gameName" element={<GameDetail />} />
             <Route path="/howtoplay/:gameName" element={<HowToPlay />} />
-            <Route path="/play/:gameName" element={<Play />} />
+            <Route path="/play/:gameName" element={
+                <ProtectedRoute>
+                  <Play />
+                </ProtectedRoute>
+              } 
+            />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </div>
       </Router>
