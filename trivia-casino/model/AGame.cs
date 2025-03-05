@@ -20,4 +20,13 @@ public abstract class AGame {
     public void RemovePlayer(Player player) {
         Players.Remove(player);
     }
+
+    public Player GetPlayerByUsername(string username) {
+        Player? player = Players.Find(p => p.Username == username);
+
+        if (player == null) {
+            throw new InvalidOperationException("Player not found with username: " + username);
+        }
+        return player;
+    }
 }
