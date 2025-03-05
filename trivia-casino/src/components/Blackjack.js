@@ -14,7 +14,7 @@ export default function Blackjack() {
     };
   } else {
     defaultGameState = {
-      CurrentPlayer: '',
+      CurrentPlayer: "",
       DealerHand: [],
       Players: {}
     };
@@ -22,9 +22,9 @@ export default function Blackjack() {
 
   const [gameState, setGameState] = useState(defaultGameState);
   const { setSessionData } = useGameSession();
-  const gameInSession = gameState && gameState.currentPlayer !== '';
+  const gameInSession = gameState && gameState.currentPlayer !== "";
 
-  let playerActionButtons;
+  let playerActionButtons, message = "";
   if (gameInSession) {
     playerActionButtons = (
       <>
@@ -82,6 +82,7 @@ export default function Blackjack() {
 
   function processData(data) {
     try {
+      console.log(data);
       setGameState(data);
       setSessionData(data);
     } catch (error) {
@@ -93,8 +94,8 @@ export default function Blackjack() {
     <div>
       {gameState && (
         <div>
+          {message}
           {playerActionButtons}
-          {/* Render gameState or do whatever you need to do */}
           {gameState.Players && (
             <div>
               <h2>Dealer's Hand:</h2>
