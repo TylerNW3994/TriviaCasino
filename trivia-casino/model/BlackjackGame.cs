@@ -4,8 +4,6 @@ public class BlackjackGame : ACardGame {
     Dictionary<string, int> playerScores = new();
     private Dictionary<string, Hand> playerSplitHands = new();
 
-    public string currentPlayer = "";
-
     public void Initialize() {
         deck.deckType = DeckType.STANDARD;
     }
