@@ -3,7 +3,7 @@ using TriviaCasino.Model;
 
 public class GameActionRequest {
     [Required]
-    public BlackjackGame GameState { get; set; } = new();
+    public required BlackjackGame GameState { get; set; } = new();
     [Required]
-    public string Username { get; set; } = string.Empty;
+    public required string Username { get; set; } = string.Empty;
 }
