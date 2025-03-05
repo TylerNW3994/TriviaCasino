@@ -30,4 +30,23 @@ public abstract class AGame {
         }
         return player;
     }
+
+    public Player? GetNextPlayer() {
+        if (CurrentPlayer == string.Empty) {
+            Player? player = Players[0] ?? throw new InvalidOperationException("Game has no Players");
+            return player;
+        } else {
+            int currentPlayerIndex = Players.FindIndex(p => p.Username == CurrentPlayer);
+
+            // Dealer's turn
+            if (currentPlayerIndex == Players.Count - 1) {
+                CurrentPlayer = string.Empty;
+                return null;
+            }
+
+            Player? nextPlayer = Players[currentPlayerIndex + 1];
+            CurrentPlayer = nextPlayer.Username;
+            return Players[currentPlayerIndex + 1];
+        }
+    }
 }
