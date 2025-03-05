@@ -5,15 +5,19 @@ namespace TriviaCasinoApi.Controllers {
     [ApiController]
     [Route("api/[controller]")]
     public class BlackjackController : ControllerBase {
+        BlackjackGame game = new();
         [HttpPost("newgame")]
-        public IActionResult NewGame() {
-            var game = new BlackjackGame();
+        public IActionResult NewGame([FromBody] GameActionRequest request) {
+            game = new BlackjackGame();
+            game.Initialize();
+            game.StartGame();
+            game.DealStartingCards();
             return Ok(game);
         }
 
         [HttpPost("hit")]
-        public IActionResult Hit([FromBody] BlackjackGame game, string username) {
-            game.Hit(username);
+        public IActionResult Hit([FromBody] GameActionRequest request) {
+            game.Hit(request.Username);
             return Ok(game);
         }
     }
