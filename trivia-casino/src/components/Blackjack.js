@@ -1,13 +1,25 @@
 import React, { useState } from "react";
 import { useGameSession } from "./GameSessionProvider";
-
-const defaultGameState = {
-  currentPlayer: '',
-  dealerHand: [],
-  Players: {}
-};
+import { useUser } from './UserProvider';
 
 export default function Blackjack() {
+  let defaultGameState = {};
+  const { user } = useUser();
+
+  if (user.username) {
+    defaultGameState = {
+      CurrentPlayer: user,
+      DealerHand: [],
+      Players: {}
+    };
+  } else {
+    defaultGameState = {
+      CurrentPlayer: '',
+      DealerHand: [],
+      Players: {}
+    };
+  }
+
   const [gameState, setGameState] = useState(defaultGameState);
   const { setSessionData } = useGameSession();
   const gameInSession = gameState && gameState.currentPlayer !== '';
@@ -36,17 +48,10 @@ export default function Blackjack() {
     const response = await fetch("/api/blackjack/newgame", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(defaultGameState)
     });
-    const temp = await response.text();
-    console.log(temp);
 
-    try {
-      const data = JSON.parse(temp);
-      setGameState(data);
-      setSessionData(data);
-    } catch (error) {
-      console.error("Error parsing JSON:", error);
-    }
+    processData(JSON.parse(response));
   }
 
   async function handleHit(username) {
@@ -58,9 +63,8 @@ export default function Blackjack() {
         username: username,
       }),
     });
-    const data = await response.json();
-    setGameState(data);
-    setSessionData(data);
+
+    processData(JSON.parse(response));
   }
 
   async function handleStand(username) {
@@ -72,9 +76,17 @@ export default function Blackjack() {
         username: username,
       }),
     });
-    const data = await response.json();
-    setGameState(data);
-    setSessionData(data);
+
+    processData(JSON.parse(response));
+  }
+
+  function processData(data) {
+    try {
+      setGameState(data);
+      setSessionData(data);
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+    }
   }
 
   return (
