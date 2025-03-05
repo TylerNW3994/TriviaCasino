@@ -7,18 +7,31 @@ namespace TriviaCasinoApi.Controllers {
     public class BlackjackController : ControllerBase {
         BlackjackGame game = new();
         [HttpPost("newgame")]
-        public IActionResult NewGame([FromBody] GameActionRequest request) {
+        public ApiResponse NewGame([FromBody] GameActionRequest request) {
             game = new BlackjackGame();
             game.Initialize();
             game.StartGame();
-            game.DealStartingCards();
-            return Ok(game);
+            game.DealStartingCards();            
+
+            var response = new ApiResponse {
+                GameData = game,
+                Message = "New Game Started"
+            };
+            return response;
         }
 
         [HttpPost("hit")]
-        public IActionResult Hit([FromBody] GameActionRequest request) {
-            game.Hit(request.Username);
-            return Ok(game);
+        public ApiResponse Hit([FromBody] GameActionRequest request) {
+            var response = new ApiResponse {
+                GameData = game,
+                Message = request.Username + " hit!"
+            };
+            return response;
         }
+    }
+
+    public class ApiResponse {
+        public BlackjackGame GameData { get; set; }
+        public string Message { get; set; }
     }
 }
