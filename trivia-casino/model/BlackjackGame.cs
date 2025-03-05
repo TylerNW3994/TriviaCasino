@@ -13,8 +13,11 @@ public class BlackjackGame : ACardGame {
     }
 
     public void NextPlayer() {
-        // Go through all the players
-        // When you get to the end of the list,
+        Player? nextPlayer = GetNextPlayer();
+
+        if (nextPlayer == null) {
+            DetermineWinner();
+        }
         // go to DetemineWinner
     }
 
@@ -39,7 +42,7 @@ public class BlackjackGame : ACardGame {
     }
 
     public void Stand() {
-        // Could implement NextPlayer here instead.
+        NextPlayer();
     }
 
     public void SetStatus(GameState status) {
