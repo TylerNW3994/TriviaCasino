@@ -11,7 +11,7 @@ namespace TriviaCasinoApi.Controllers {
             game = new BlackjackGame();
             game.Initialize();
             game.StartGame();
-            game.DealStartingCards();            
+            game.DealStartingCards();
 
             var response = new ApiResponse {
                 GameData = game,
@@ -28,10 +28,24 @@ namespace TriviaCasinoApi.Controllers {
             };
             return response;
         }
+
+        [HttpPost("stand")]
+        public ApiResponse Stand([FromBody] GameActionRequest request) {
+            var response = new ApiResponse {
+                GameData = game,
+                Message = request.Username + " stands! Moving to next player..."
+            };
+            return response;
+        }
     }
 
     public class ApiResponse {
-        public BlackjackGame GameData { get; set; }
-        public string Message { get; set; }
+        public required BlackjackGame GameData { get; set; }
+        public required string Message { get; set; }
+    }
+
+    public class GameActionRequest {
+        public required BlackjackGame GameState { get; set; } = new();
+        public required string Username { get; set; } = string.Empty;
     }
 }
