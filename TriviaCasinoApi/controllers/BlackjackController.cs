@@ -9,6 +9,15 @@ namespace TriviaCasinoApi.Controllers {
         [HttpPost("newgame")]
         public ApiResponse NewGame([FromBody] GameActionRequest request) {
             game = new BlackjackGame();
+
+            if (request.UserToAdd != null) {
+                game.AddPlayer(request.UserToAdd);
+                
+                if (game.CurrentPlayer == string.Empty) {
+                    game.CurrentPlayer = request.UserToAdd.Username;
+                }
+            }
+            
             game.Initialize();
             game.StartGame();
             game.DealStartingCards();
@@ -47,5 +56,6 @@ namespace TriviaCasinoApi.Controllers {
     public class GameActionRequest {
         public required BlackjackGame GameState { get; set; } = new();
         public required string Username { get; set; } = string.Empty;
+        public Player? UserToAdd {get; set; }
     }
 }
