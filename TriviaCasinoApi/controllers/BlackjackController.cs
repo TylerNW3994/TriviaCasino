@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using TriviaCasino.Model;
+using TriviaCasinoAPI.Model;
 
 namespace TriviaCasinoApi.Controllers {
     [ApiController]
