@@ -1,6 +1,6 @@
 using System.Collections;
+namespace TriviaCasinoAPI.Model;
 
-namespace TriviaCasino.Model;
 public class Hand : IEnumerable<Card> {
     public List<Card> cards { get; set; } = new();
 

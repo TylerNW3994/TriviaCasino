@@ -9,10 +9,12 @@ function GameDetail() {
       <Link to={`/howtoplay/${gameName}`}>
         <button>Learn how to play {gameName}</button>
       </Link>
+      <Link to={`/play/${gameName}`}>
+        <button>Play new game</button>
+      </Link>
     </div>
 
     // Implement games list here
-    // Create new Game button
   );
 }
 
