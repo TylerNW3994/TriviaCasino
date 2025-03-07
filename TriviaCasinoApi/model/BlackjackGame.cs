@@ -1,4 +1,4 @@
-namespace TriviaCasino.Model;
+namespace TriviaCasinoAPI.Model;
 public class BlackjackGame : ACardGame {
     Hand dealerHand = new();
     Dictionary<string, int> playerScores = new();

@@ -1,5 +1,5 @@
 ﻿using Xunit;
-using TriviaCasino.Model;
+using TriviaCasinoAPI.Model;
 namespace TriviaCasino.Tests;
 
 public class DeckTest {

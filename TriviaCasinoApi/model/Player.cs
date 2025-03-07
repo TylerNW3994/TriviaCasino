@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-namespace TriviaCasino.Model;
+namespace TriviaCasinoAPI.Model;
 
 public class Player {
     [Key]

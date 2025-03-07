@@ -1,4 +1,4 @@
-namespace TriviaCasino.Model;
+namespace TriviaCasinoAPI.Model;
 public abstract class AGame {
     public int Id;
     public string Name { set; get; } = "";
