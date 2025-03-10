@@ -56,6 +56,6 @@ namespace TriviaCasinoApi.Controllers {
     public class GameActionRequest {
         public required BlackjackGame GameState { get; set; } = new();
         public required string Username { get; set; } = string.Empty;
-        public Player? UserToAdd {get; set; }
+        public Player? UserToAdd { get; set; }
     }
 }

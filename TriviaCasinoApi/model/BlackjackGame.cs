@@ -1,8 +1,8 @@
 namespace TriviaCasinoAPI.Model;
 public class BlackjackGame : ACardGame {
-    Hand dealerHand = new();
-    Dictionary<string, int> playerScores = new();
-    private Dictionary<string, Hand> playerSplitHands = new();
+    public Hand dealerHand { get; set; } = new();
+    public Dictionary<string, int> playerScores { get; set; } = new();
+    private Dictionary<string, Hand> playerSplitHands { get; set; } = new();
 
     public void Initialize() {
         deck.deckType = DeckType.STANDARD;
@@ -51,17 +51,17 @@ public class BlackjackGame : ACardGame {
 
     public override void DealStartingCards() {
         foreach (var player in Players) {
-            playerHands[player.Username] = new Hand() {
-                deck.DrawCard(),
-                deck.DrawCard()
-            };
+            Hand hand = new();
+            hand.Add(deck.DrawCard());
+            hand.Add(deck.DrawCard());
+            playerHands[player.Username] = hand;
             DetermineScore(player.Username);
         }
     }
 
     private void DetermineScore(string username, Hand playerHand) {
         int score = 0, aceCount = 0;
-        foreach (Card card in playerHand) {
+        foreach (Card card in playerHand.cards) {
             score += card.value;
 
             if (card.rank == "A") {
