@@ -23,7 +23,7 @@ namespace TriviaCasinoApi.Controllers {
             game.DealStartingCards();
 
             var response = new ApiResponse {
-                GameData = game,
+                GameData = game.ToDto(),
                 Message = "New Game Started"
             };
             return response;
@@ -32,7 +32,7 @@ namespace TriviaCasinoApi.Controllers {
         [HttpPost("hit")]
         public ApiResponse Hit([FromBody] GameActionRequest request) {
             var response = new ApiResponse {
-                GameData = game,
+                GameData = game.ToDto(),
                 Message = request.Username + " hit!"
             };
             return response;
@@ -41,7 +41,7 @@ namespace TriviaCasinoApi.Controllers {
         [HttpPost("stand")]
         public ApiResponse Stand([FromBody] GameActionRequest request) {
             var response = new ApiResponse {
-                GameData = game,
+                GameData = game.ToDto(),
                 Message = request.Username + " stands! Moving to next player..."
             };
             return response;
@@ -49,7 +49,7 @@ namespace TriviaCasinoApi.Controllers {
     }
 
     public class ApiResponse {
-        public required BlackjackGame GameData { get; set; }
+        public required BlackjackGameDto GameData { get; set; }
         public required string Message { get; set; }
     }
 

@@ -1,15 +1,15 @@
 namespace TriviaCasinoAPI.Model;
 public class BlackjackGame : ACardGame {
-    public Hand dealerHand { get; set; } = new();
-    public Dictionary<string, int> playerScores { get; set; } = new();
-    private Dictionary<string, Hand> playerSplitHands { get; set; } = new();
+    public List<Card> DealerHand { get; set; } = new();
+    public Dictionary<string, int> PlayerScores { get; set; } = new();
+    private Dictionary<string, List<Card>> PlayerSplitHands { get; set; } = new();
 
     public void Initialize() {
-        deck.deckType = DeckType.STANDARD;
+        Deck.deckType = DeckType.STANDARD;
     }
 
     public void StartGame() {
-        deck = deck.ShuffleNewDeck();
+        Deck = Deck.ShuffleNewDeck();
     }
 
     public void NextPlayer() {
@@ -18,7 +18,6 @@ public class BlackjackGame : ACardGame {
         if (nextPlayer == null) {
             DetermineWinner();
         }
-        // go to DetemineWinner
     }
 
     public override void DetermineWinner() {
@@ -30,9 +29,9 @@ public class BlackjackGame : ACardGame {
     }
 
     public void Hit(string username) {
-        Card card = deck.DrawCard();
+        Card card = Deck.DrawCard();
 
-        if (playerHands.TryGetValue(username, out Hand? playerHand)) {
+        if (PlayerHands.TryGetValue(username, out List<Card>? playerHand)) {
             playerHand.Add(card);
             DetermineScore(username, playerHand);
         }
@@ -51,17 +50,26 @@ public class BlackjackGame : ACardGame {
 
     public override void DealStartingCards() {
         foreach (var player in Players) {
-            Hand hand = new();
-            hand.Add(deck.DrawCard());
-            hand.Add(deck.DrawCard());
-            playerHands[player.Username] = hand;
+            List<Card> hand = [Deck.DrawCard(), Deck.DrawCard()];
+            PlayerHands[player.Username] = hand;
             DetermineScore(player.Username);
         }
     }
 
-    private void DetermineScore(string username, Hand playerHand) {
+    public BlackjackGameDto ToDto() {
+        return new BlackjackGameDto {
+            DealerHand = DealerHand,
+            Deck = Deck,
+            PlayerHands = PlayerHands,
+            PlayerScores = PlayerScores,
+            Players = Players,
+            CurrentPlayer = CurrentPlayer
+        };
+    }
+
+    private void DetermineScore(string username, List<Card> playerHand) {
         int score = 0, aceCount = 0;
-        foreach (Card card in playerHand.cards) {
+        foreach (Card card in playerHand) {
             score += card.value;
 
             if (card.rank == "A") {
@@ -75,11 +83,11 @@ public class BlackjackGame : ACardGame {
             aceCount--;
         }
 
-        playerScores[username] = score;
+        PlayerScores[username] = score;
     }
 
     private void DetermineScore(string username) {
-        if (playerHands.TryGetValue(username, out Hand? playerHand)) {
+        if (PlayerHands.TryGetValue(username, out List<Card>? playerHand)) {
             DetermineScore(username, playerHand);
         } else {
             throw new InvalidOperationException("Hand does not exist for player " + username);

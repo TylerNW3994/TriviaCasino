@@ -1,11 +1,11 @@
 namespace TriviaCasinoAPI.Model;
 public abstract class ACardGame : AGame {
-    protected Deck deck { set; get; } = new();
-    protected Dictionary<string, Hand> playerHands { get; set; } = new();
+    protected Deck Deck { set; get; } = new();
+    protected Dictionary<string, List<Card>> PlayerHands { get; set; } = new();
 
     public override void PlayAgain() {
-        deck.ShuffleDeck();
-        playerHands.Clear();
+        Deck.ShuffleDeck();
+        PlayerHands.Clear();
     }
 
     public abstract void DealStartingCards();
