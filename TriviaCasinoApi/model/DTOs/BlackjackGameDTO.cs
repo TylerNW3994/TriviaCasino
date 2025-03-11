@@ -4,7 +4,7 @@ namespace TriviaCasinoAPI.Model {
         public required Deck Deck { get; set; }
         public required Dictionary<string, List<Card>> PlayerHands { get; set; }
         public required Dictionary<string, int> PlayerScores { get; set; } 
-        public required List<Player> Players { set; get; }
+        public required List<PlayerDTO> Players { set; get; }
         public required string CurrentPlayer { get; set; }
     }
 }

@@ -62,7 +62,7 @@ public class BlackjackGame : ACardGame {
             Deck = Deck,
             PlayerHands = PlayerHands,
             PlayerScores = PlayerScores,
-            Players = Players,
+            Players = Players.Select(player => player.ToDto()).ToList(),
             CurrentPlayer = CurrentPlayer
         };
     }
