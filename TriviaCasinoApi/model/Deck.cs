@@ -1,6 +1,6 @@
 namespace TriviaCasinoAPI.Model;
 public class Deck {
-    public Stack<Card> cards = new();
+    public Stack<Card> cards { get; set; } = new();
     public DeckType deckType;
 
     public Deck ShuffleNewDeck() {
