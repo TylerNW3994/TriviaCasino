@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
-namespace TriviaCasino.Model;
+namespace TriviaCasinoAPI.Model;
 
 public class Player {
     [Key]
     public int UserId { set; get; }
-    public string Password { set; get; } = "";
+    private string Password { set; get; } = "";
     public string Username { set; get; } = "";
     public string Email { set; get; } = "";
     public int GamesWon { private set; get; }
@@ -17,5 +17,14 @@ public class Player {
 
     public void IncreaseGamesPlayed() {
         GamesPlayed++;
+    }
+
+    public PlayerDTO ToDto() {
+        return new PlayerDTO {
+            UserId = UserId,
+            Username = Username,
+            Chips = Chips,
+            GamesWon = GamesWon
+        };
     }
 }
