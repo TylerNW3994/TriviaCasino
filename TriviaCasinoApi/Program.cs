@@ -13,6 +13,8 @@ builder.Services.AddCors(options => {
     });
 });
 
+builder.Services.AddSingleton<BlackjackGameService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
