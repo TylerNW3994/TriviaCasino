@@ -10,6 +10,9 @@ public class BlackjackGame : ACardGame {
 
     public void StartGame() {
         Deck = Deck.ShuffleNewDeck();
+        DealerHand.Clear();
+        DealerHand.Add(Deck.DrawCard());
+        DealerHand.Add(Deck.DrawCard());
     }
 
     public void NextPlayer() {
@@ -58,9 +61,20 @@ public class BlackjackGame : ACardGame {
 
     public BlackjackGameDto ToDto() {
         return new BlackjackGameDto {
-            DealerHand = DealerHand,
+            DealerHand = DealerHand.Select(card => new Card (
+                card.value,
+                card.rank,
+                card.suit
+            )).ToList(),
             Deck = Deck,
-            PlayerHands = PlayerHands,
+            PlayerHands = PlayerHands.ToDictionary(
+                kvp => kvp.Key,
+                kvp => kvp.Value.Select(card => new Card (
+                    card.value,
+                    card.rank,
+                    card.suit
+                )).ToList()
+            ),
             PlayerScores = PlayerScores,
             Players = Players.Select(player => player.ToDto()).ToList(),
             CurrentPlayer = CurrentPlayer
