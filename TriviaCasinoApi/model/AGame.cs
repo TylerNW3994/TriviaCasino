@@ -1,6 +1,6 @@
 namespace TriviaCasinoAPI.Model;
 public abstract class AGame {
-    public int Id;
+    public string GameId { set; get; } = "";
     public string Name { set; get; } = "";
     public string Winner { set; get; } = "";
     public GameState Status { protected set; get; } = GameState.NotStarted;

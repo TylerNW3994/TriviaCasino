@@ -4,6 +4,10 @@ public class BlackjackGame : ACardGame {
     public Dictionary<string, int> PlayerScores { get; set; } = new();
     private Dictionary<string, List<Card>> PlayerSplitHands { get; set; } = new();
 
+    public BlackjackGame(string gameId) {
+        GameId = gameId;
+    }
+
     public void Initialize() {
         Deck.deckType = DeckType.STANDARD;
     }
@@ -61,6 +65,7 @@ public class BlackjackGame : ACardGame {
 
     public BlackjackGameDto ToDto() {
         return new BlackjackGameDto {
+            GameId = GameId,
             DealerHand = DealerHand.Select(card => new Card (
                 card.value,
                 card.rank,
