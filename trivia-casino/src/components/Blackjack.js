@@ -3,35 +3,31 @@ import { useGameSession } from "./GameSessionProvider";
 import { useUser } from './UserProvider';
 
 export default function Blackjack() {
-  let defaultGameState = {};
+  let defaultGameState = {
+    gameId: "",
+    currentPlayer: "",
+    dealerHand: [],
+    players: []
+  },
+  payload = {};
+
   const { user } = useUser();
-
-  if (user.username) {
-    defaultGameState = {
-      CurrentPlayer: user,
-      DealerHand: [],
-      Players: {}
-    };
-  } else {
-    defaultGameState = {
-      CurrentPlayer: "",
-      DealerHand: [],
-      Players: {}
-    };
-  }
-
   const [gameState, setGameState] = useState(defaultGameState);
+  const [message, setMessage] = useState("");
   const { setSessionData } = useGameSession();
-  const gameInSession = gameState && gameState.currentPlayer !== "";
+  let gameInSession = gameState?.currentPlayer !== "";
 
-  let playerActionButtons, message = "";
+  payload.Username = user?.username;
+  payload.GameState = defaultGameState;
+
+  let playerActionButtons;
   if (gameInSession) {
     playerActionButtons = (
       <>
-        <button onClick={() => handleHit(gameState.currentPlayer)}>
+        <button onClick={() => handleHit(user?.username)}>
           Hit
         </button>
-        <button onClick={() => handleStand(gameState.currentPlayer)}>
+        <button onClick={() => handleStand(user?.username)}>
           Stand
         </button>
       </>
@@ -45,46 +41,50 @@ export default function Blackjack() {
   }
 
   async function startNewGame() {
+    payload.UserToAdd = user;
+
     const response = await fetch("/api/blackjack/newgame", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(defaultGameState)
+      body: JSON.stringify(payload)
     });
 
-    processData(JSON.parse(response));
+    const data = await response.json();
+    processData(data);
   }
 
   async function handleHit(username) {
+    payload.Username = username;
+
     const response = await fetch("/api/blackjack/hit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        gameState,
-        username: username,
-      }),
+      body: JSON.stringify(payload)
     });
 
-    processData(JSON.parse(response));
+    const data = await response.json();
+    processData(data);
   }
 
   async function handleStand(username) {
+    payload.Username = username;
+
     const response = await fetch("/api/blackjack/stand", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        gameState,
-        username: username,
-      }),
+      body: JSON.stringify(payload)
     });
 
-    processData(JSON.parse(response));
+    const data = await response.json();
+    processData(data);
   }
 
   function processData(data) {
     try {
-      console.log(data);
-      setGameState(data);
-      setSessionData(data);
+      payload.GameState = data.gameData;
+      setGameState(data.gameData);
+      setMessage(data.message);
+      setSessionData(data.gameData);
     } catch (error) {
       console.error("Error parsing JSON:", error);
     }
@@ -96,11 +96,11 @@ export default function Blackjack() {
         <div>
           {message}
           {playerActionButtons}
-          {gameState.Players && (
+          {gameState.players && (
             <div>
               <h2>Dealer's Hand:</h2>
               <p>{JSON.stringify(gameState.dealerHand)}</p>
-              {Object.entries(gameState.Players).map(([name, player]) => (
+              {Object.entries(gameState.players).map(([name, player]) => (
                 <div key={name}>
                   <h3>{name}</h3>
                   <p>{player.Score}</p>

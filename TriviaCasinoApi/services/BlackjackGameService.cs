@@ -17,7 +17,6 @@ public class BlackjackGameService {
         game.Initialize();
         game.StartGame();
         game.DealStartingCards();
-        Console.Write(game);
 
         _games[gameId] = game;
         return game;
