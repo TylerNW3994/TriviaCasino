@@ -33,7 +33,7 @@ public class Deck {
         List<Card> cardList = new();
         deckType = DeckType.STANDARD;
 
-        foreach (CardSuit suit in Enum.GetValues(typeof(CardSuit))) {
+        foreach (string suit in STANDARD_SUITS) {
             foreach (var cardKvp in STANDARD_DECK_CARDS) {
                 foreach (var cardValue in cardKvp.Value) {
                     Card newCard = new Card(cardKvp.Key, cardValue, suit);
@@ -54,7 +54,7 @@ public class Deck {
         return cards.Pop();
     }
 
-    private Dictionary<int, List<string>> STANDARD_DECK_CARDS = new Dictionary<int, List<string>> {
+    private readonly Dictionary<int, List<string>> STANDARD_DECK_CARDS = new Dictionary<int, List<string>> {
         { 2, new List<string> { "2" } },
         { 3, new List<string> { "3" } },
         { 4, new List<string> { "4" } },
@@ -65,5 +65,12 @@ public class Deck {
         { 9, new List<string> { "9" } },
         { 10, new List<string> { "10", "J", "Q", "K" } },
         { 11, new List<string> { "A" } }
+    };
+
+    private readonly List<string> STANDARD_SUITS = new List<string>{
+        "Spade",
+        "Heart",
+        "Club",
+        "Diamond"
     };
 }
