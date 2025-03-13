@@ -15,6 +15,12 @@ export default function Blackjack() {
 
   const { user } = useUser();
   const [gameState, setGameState] = useState(defaultGameState);
+  const [dealerData, setDealerData] = useState({
+    playerScore: 0,
+    playerHand: [],
+    username: "Dealer",
+    chips: null
+  });
   const [message, setMessage] = useState("");
   const { setSessionData } = useGameSession();
   let gameInSession = gameState?.currentPlayer !== "";
@@ -87,6 +93,13 @@ export default function Blackjack() {
       setGameState(data.gameData);
       setMessage(data.message);
       setSessionData(data.gameData);
+
+      setDealerData({
+        playerScore : data.gameData.dealerScore,
+        playerHand : data.gameData.dealerHand,
+        username : "Dealer",
+        chips : null
+      });
     } catch (error) {
       console.error("Error parsing JSON:", error);
     }
@@ -101,14 +114,7 @@ export default function Blackjack() {
           {playerActionButtons}
           {gameState.players && (
             <div>
-              <h2>Dealer's Hand:</h2>
-              {gameState.dealerHand.map((card) => {
-                  let cardData = {
-                      rank : card.rank,
-                      suit : card.suit
-                  }
-                  return <Card cardData={cardData} />
-              })}
+              <BlackjackPlayer playerData={dealerData} />
               {gameState.players.map((player) => {
                 let playerData = {
                   playerScore : gameState.playerScores[player.username],

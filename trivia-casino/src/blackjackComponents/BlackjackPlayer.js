@@ -15,7 +15,9 @@ function BlackjackPlayer({ playerData }) {
                 return <Card cardData={cardData} />
             })}
             </div>
-            <p>Chips: {playerData.chips}</p>
+            {playerData.chips != null && (
+                <p>Chips: {playerData.chips}</p>
+            )}
         </div>
     );
 }
