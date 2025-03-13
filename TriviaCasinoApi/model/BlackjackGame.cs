@@ -1,6 +1,7 @@
 namespace TriviaCasinoAPI.Model;
 public class BlackjackGame : ACardGame {
     public List<Card> DealerHand { get; set; } = new();
+    public int DealerScore { get; set; }
     public Dictionary<string, int> PlayerScores { get; set; } = new();
     private Dictionary<string, List<Card>> PlayerSplitHands { get; set; } = new();
 
@@ -17,6 +18,7 @@ public class BlackjackGame : ACardGame {
         DealerHand.Clear();
         DealerHand.Add(Deck.DrawCard());
         DealerHand.Add(Deck.DrawCard());
+        DealerScore = DetermineScore(DealerHand);
     }
 
     public void NextPlayer() {
@@ -71,6 +73,7 @@ public class BlackjackGame : ACardGame {
                 card.rank,
                 card.suit
             )).ToList(),
+            DealerScore = DealerScore,
             Deck = Deck,
             PlayerHands = PlayerHands.ToDictionary(
                 kvp => kvp.Key,
@@ -87,8 +90,20 @@ public class BlackjackGame : ACardGame {
     }
 
     private void DetermineScore(string username, List<Card> playerHand) {
+        PlayerScores[username] = DetermineScore(playerHand);
+    }
+
+    private void DetermineScore(string username) {
+        if (PlayerHands.TryGetValue(username, out List<Card>? playerHand)) {
+            DetermineScore(username, playerHand);
+        } else {
+            throw new InvalidOperationException("Hand does not exist for player " + username);
+        }
+    }
+
+    private int DetermineScore(List<Card> hand) {
         int score = 0, aceCount = 0;
-        foreach (Card card in playerHand) {
+        foreach (Card card in hand) {
             score += card.value;
 
             if (card.rank == "A") {
@@ -102,15 +117,7 @@ public class BlackjackGame : ACardGame {
             aceCount--;
         }
 
-        PlayerScores[username] = score;
-    }
-
-    private void DetermineScore(string username) {
-        if (PlayerHands.TryGetValue(username, out List<Card>? playerHand)) {
-            DetermineScore(username, playerHand);
-        } else {
-            throw new InvalidOperationException("Hand does not exist for player " + username);
-        }
+        return score;
     }
 
     private readonly int BLACKJACK_MAX_SCORE = 21, ACE_SUBTRACTOR = 10;
