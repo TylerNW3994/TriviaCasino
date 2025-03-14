@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useGameSession } from "./GameSessionProvider";
 import { useUser } from './UserProvider';
+import BlackjackPlayer from "../blackjackComponents/BlackjackPlayer";
+import Card from "../blackjackComponents/Card";
 
 export default function Blackjack() {
   let defaultGameState = {
@@ -13,6 +15,12 @@ export default function Blackjack() {
 
   const { user } = useUser();
   const [gameState, setGameState] = useState(defaultGameState);
+  const [dealerData, setDealerData] = useState({
+    playerScore: 0,
+    playerHand: [],
+    username: "Dealer",
+    chips: null
+  });
   const [message, setMessage] = useState("");
   const { setSessionData } = useGameSession();
   let gameInSession = gameState?.currentPlayer !== "";
@@ -85,6 +93,13 @@ export default function Blackjack() {
       setGameState(data.gameData);
       setMessage(data.message);
       setSessionData(data.gameData);
+
+      setDealerData({
+        playerScore : data.gameData.dealerScore,
+        playerHand : data.gameData.dealerHand,
+        username : "Dealer",
+        chips : null
+      });
     } catch (error) {
       console.error("Error parsing JSON:", error);
     }
@@ -95,18 +110,21 @@ export default function Blackjack() {
       {gameState && (
         <div>
           {message}
+          <br></br>
           {playerActionButtons}
           {gameState.players && (
             <div>
-              <h2>Dealer's Hand:</h2>
-              <p>{JSON.stringify(gameState.dealerHand)}</p>
-              {Object.entries(gameState.players).map(([name, player]) => (
-                <div key={name}>
-                  <h3>{name}</h3>
-                  <p>{player.Score}</p>
-                  <div>Hand: {player.hand && player.hand.join(", ")}</div>
-                </div>
-              ))}
+              <BlackjackPlayer playerData={dealerData} />
+              {gameState.players.map((player) => {
+                let playerData = {
+                  playerScore : gameState.playerScores[player.username],
+                  playerHand : gameState.playerHands[player.username],
+                  username : player.username,
+                  chips : player.chips
+                };
+
+                return <BlackjackPlayer playerData={playerData} />
+              })}
             </div>
           )}
         </div>

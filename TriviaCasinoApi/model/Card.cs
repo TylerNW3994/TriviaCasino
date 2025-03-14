@@ -1,12 +1,12 @@
 namespace TriviaCasinoAPI.Model;
 public class Card {
-    public int value { get; set; }
-    public string rank { get; set; } = "";
-    public string suit { get; set; }
+    public int Value { get; set; }
+    public string Rank { get; set; } = "";
+    public string Suit { get; set; }
 
-    public Card(int newValue, string newRank, string newSuit) {
-        value = newValue;
-        rank = newRank;
-        suit = newSuit;
+    public Card(int value, string rank, string suit) {
+        this.Value = value;
+        this.Rank = rank;
+        this.Suit = suit;
     }
 }
