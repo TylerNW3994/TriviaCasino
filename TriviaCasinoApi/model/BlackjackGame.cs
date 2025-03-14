@@ -69,18 +69,18 @@ public class BlackjackGame : ACardGame {
         return new BlackjackGameDto {
             GameId = GameId,
             DealerHand = DealerHand.Select(card => new Card (
-                card.value,
-                card.rank,
-                card.suit
+                card.Value,
+                card.Rank,
+                card.Suit
             )).ToList(),
             DealerScore = DealerScore,
             Deck = Deck,
             PlayerHands = PlayerHands.ToDictionary(
                 kvp => kvp.Key,
                 kvp => kvp.Value.Select(card => new Card (
-                    card.value,
-                    card.rank,
-                    card.suit
+                    card.Value,
+                    card.Rank,
+                    card.Suit
                 )).ToList()
             ),
             PlayerScores = PlayerScores,
@@ -104,9 +104,9 @@ public class BlackjackGame : ACardGame {
     private int DetermineScore(List<Card> hand) {
         int score = 0, aceCount = 0;
         foreach (Card card in hand) {
-            score += card.value;
+            score += card.Value;
 
-            if (card.rank == "A") {
+            if (card.Rank == "A") {
                 aceCount++;
             }
         }
