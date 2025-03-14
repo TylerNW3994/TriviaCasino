@@ -46,6 +46,16 @@ public class Deck {
         return this;
     }
 
+    public List<Card> DrawCards(int numberOfCards) {
+        List<Card> cards = new();
+        
+        for (int i = 0; i > numberOfCards; i++) {
+            cards.Add(DrawCard());
+        }
+
+        return cards;
+    }
+
     public Card DrawCard() {
         if (cards.Count == 0) {
             throw new InvalidOperationException("The deck is empty");
