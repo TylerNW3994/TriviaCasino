@@ -28,6 +28,25 @@ public class DeckTest {
     }
 
     [Fact]
+    public void ShouldDrawMultipleCards() {
+        Deck deck = new();
+        deck.CreateStandardDeck();
+
+        List<Card> cards = deck.DrawCards(3);
+
+        Assert.NotNull(cards);
+        Assert.Equal(3, cards.Count);
+    }
+
+    [Fact]
+    public void ShouldThrowExceptionZeroNegativeMultipleCards() {
+        Deck deck = new();
+        deck.CreateStandardDeck();
+
+        Assert.Throws<InvalidOperationException>(() => deck.DrawCards(0));
+    }
+
+    [Fact]
     public void DrawFromEmptyDeckShouldThrow() {
         Deck deck = new();
         Assert.Throws<InvalidOperationException>(() => deck.DrawCard());
