@@ -17,6 +17,16 @@ public class BlackjackGame : ACardGame {
         DealerHand.Clear();
         DealerHand.AddRange(Deck.DrawCards(2));
         DealerScore = DetermineScore(DealerHand);
+        
+        PlayerDatas.Clear();
+        foreach (var player in Players) {
+            PlayerData data = new();
+            data.Score = 0;
+            data.Status = STATUS_IN_PLAY;
+
+            PlayerDatas.Add(player.Username, data);
+        }
+
         DealStartingCards();
     }
 
@@ -33,6 +43,8 @@ public class BlackjackGame : ACardGame {
         if (playersBusted == Players.Count) {
             return;
         }
+
+        DealerScore = DetermineScore(DealerHand);
 
         while (DealerScore < DEALER_CUTOFF) {
             DealerHand.Add(Deck.DrawCard());
@@ -117,7 +129,7 @@ public class BlackjackGame : ACardGame {
         };
     }
 
-    private void DetermineScore(string username, List<Card> playerHand) {
+    internal void DetermineScore(string username, List<Card> playerHand) {
         int score = DetermineScore(playerHand);
         PlayerDatas[username].Score = score;
         bool playerBusted = score > BLACKJACK_MAX_SCORE, playerDrewBlackjack = score == BLACKJACK_MAX_SCORE && PlayerHands[username].Count == 2; 
@@ -136,7 +148,7 @@ public class BlackjackGame : ACardGame {
         PlayerDatas[username].Status = STATUS_IN_PLAY;
     }
 
-    private void DetermineScore(string username) {
+    internal void DetermineScore(string username) {
         if (PlayerHands.TryGetValue(username, out List<Card>? playerHand)) {
             DetermineScore(username, playerHand);
         } else {
@@ -171,5 +183,5 @@ public class BlackjackGame : ACardGame {
     private int playersBusted = 0;
 
     private readonly int BLACKJACK_MAX_SCORE = 21, ACE_SUBTRACTOR = 10, DEALER_CUTOFF = 17;
-    private readonly int STATUS_BUST = -1, STATUS_LOSE = -1, STATUS_IN_PLAY = 0, STATUS_TIE = 0, STATUS_WIN = 1, STATUS_BLACKJACK = 2;
+    internal readonly int STATUS_BUST = -1, STATUS_LOSE = -1, STATUS_IN_PLAY = 0, STATUS_TIE = 0, STATUS_WIN = 1, STATUS_BLACKJACK = 2;
 }
