@@ -19,6 +19,7 @@ public class BlackjackGame : ACardGame {
         DealerHand.Add(Deck.DrawCard());
         DealerHand.Add(Deck.DrawCard());
         DealerScore = DetermineScore(DealerHand);
+        DealStartingCards();
     }
 
     public void NextPlayer() {
