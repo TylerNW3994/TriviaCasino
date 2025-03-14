@@ -48,8 +48,12 @@ public class Deck {
 
     public List<Card> DrawCards(int numberOfCards) {
         List<Card> cards = new();
-        
-        for (int i = 0; i > numberOfCards; i++) {
+
+        if (numberOfCards <= 0) {
+            throw new InvalidOperationException("Need a positive number of cards to draw.");
+        }
+
+        for (int i = 0; i < numberOfCards; i++) {
             cards.Add(DrawCard());
         }
 
