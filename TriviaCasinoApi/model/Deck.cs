@@ -19,7 +19,7 @@ public class Deck {
 
     public void ShuffleDeck() {
         List<Card> cardList = cards.ToList();
-        Random rng = new Random();
+        Random rng = new();
 
         for (int i = cardList.Count - 1; i > 0; i--) {
             int j = rng.Next(i + 1);
@@ -30,7 +30,7 @@ public class Deck {
     }
 
     public Deck CreateStandardDeck() {
-        List<Card> cardList = new();
+        List<Card> cardList = [];
         deckType = DeckType.STANDARD;
 
         foreach (string suit in STANDARD_SUITS) {
@@ -46,7 +46,7 @@ public class Deck {
     }
 
     public List<Card> DrawCards(int numberOfCards) {
-        List<Card> cards = new();
+        List<Card> cards = [];
 
         if (numberOfCards <= 0) {
             throw new InvalidOperationException("Need a positive number of cards to draw.");
@@ -67,7 +67,7 @@ public class Deck {
         return cards.Pop();
     }
 
-    private readonly Dictionary<int, List<string>> STANDARD_DECK_CARDS = new Dictionary<int, List<string>> {
+    private readonly Dictionary<int, List<string>> STANDARD_DECK_CARDS = new() {
         { 2, new List<string> { "2" } },
         { 3, new List<string> { "3" } },
         { 4, new List<string> { "4" } },
@@ -80,10 +80,10 @@ public class Deck {
         { 11, new List<string> { "A" } }
     };
 
-    private readonly List<string> STANDARD_SUITS = new List<string>{
+    private readonly List<string> STANDARD_SUITS = [
         "Spade",
         "Heart",
         "Club",
         "Diamond"
-    };
+    ];
 }
