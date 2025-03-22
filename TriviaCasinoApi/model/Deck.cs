@@ -36,8 +36,7 @@ public class Deck {
         foreach (string suit in STANDARD_SUITS) {
             foreach (var cardKvp in STANDARD_DECK_CARDS) {
                 foreach (var cardValue in cardKvp.Value) {
-                    Card newCard = new Card(cardKvp.Key, cardValue, suit);
-                    cardList.Add(newCard);
+                    cardList.Add(new Card(cardKvp.Key, cardValue, suit));
                 }
             }
         }
