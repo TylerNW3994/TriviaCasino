@@ -2,7 +2,7 @@ namespace TriviaCasinoAPI.Model;
 public class BlackjackGame : ACardGame {
     public List<Card> DealerHand { get; set; } = new();
     public int DealerScore { get; set; }
-    public Dictionary<string, PlayerData> PlayerDatas { get; set; } = new();
+    public Dictionary<string, PlayerBlackjackData> PlayerDatas { get; set; } = new();
 
     public BlackjackGame(string gameId) {
         GameId = gameId;
@@ -20,9 +20,10 @@ public class BlackjackGame : ACardGame {
         
         PlayerDatas.Clear();
         foreach (var player in Players) {
-            PlayerData data = new();
-            data.Score = 0;
-            data.Status = STATUS_IN_PLAY;
+            PlayerBlackjackData data = new() {
+                Score = 0,
+                Status = STATUS_IN_PLAY
+            };
 
             PlayerDatas.Add(player.Username, data);
         }
@@ -35,6 +36,7 @@ public class BlackjackGame : ACardGame {
 
         if (nextPlayer == null) {
             DetermineWinner();
+            playersBusted = 0;
         }
     }
 
@@ -53,14 +55,14 @@ public class BlackjackGame : ACardGame {
 
         if (DealerScore > BLACKJACK_MAX_SCORE) {
             foreach (var player in PlayerDatas) {
-                PlayerData data = player.Value;
+                PlayerBlackjackData data = player.Value;
                 if (data.Status != STATUS_BUST) {
                     data.Status = STATUS_WIN;
                 }
             }
         } else {
             foreach (var player in PlayerDatas) {
-                PlayerData data = player.Value;
+                PlayerBlackjackData data = player.Value;
                 if (data.Status != STATUS_IN_PLAY) {
                     continue;
                 }
@@ -132,7 +134,7 @@ public class BlackjackGame : ACardGame {
     internal void DetermineScore(string username, List<Card> playerHand) {
         int score = DetermineScore(playerHand);
         PlayerDatas[username].Score = score;
-        bool playerBusted = score > BLACKJACK_MAX_SCORE, playerDrewBlackjack = score == BLACKJACK_MAX_SCORE && PlayerHands[username].Count == 2; 
+        bool playerBusted = score > BLACKJACK_MAX_SCORE, playerDrewBlackjack = score == BLACKJACK_MAX_SCORE && PlayerHands[username].Count == 2;
 
         if (playerBusted) {
             playersBusted++;
@@ -173,11 +175,6 @@ public class BlackjackGame : ACardGame {
         }
 
         return score;
-    }
-
-    public class PlayerData {
-        public int Score { get; set; }
-        public int Status { get; set; }
     }
 
     private int playersBusted = 0;
