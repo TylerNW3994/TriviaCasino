@@ -22,7 +22,8 @@ public class BlackjackGame : ACardGame {
         foreach (var player in Players) {
             PlayerBlackjackData data = new() {
                 Score = 0,
-                Status = STATUS_IN_PLAY
+                Status = STATUS_IN_PLAY,
+                Chips = player.Chips
             };
 
             PlayerDatas.Add(player.Username, data);
@@ -82,9 +83,12 @@ public class BlackjackGame : ACardGame {
     public void Hit(string username) {
         Card card = Deck.DrawCard();
 
-        if (PlayerHands.TryGetValue(username, out List<Card>? playerHand)) {
-            playerHand.Add(card);
-            DetermineScore(username, playerHand);
+        if (PlayerDatas.TryGetValue(username, out PlayerBlackjackData? data)) {
+            if (data.Hand == null) {
+                throw new InvalidOperationException("Hand does not exist for player " + username);
+            }
+            data.Hand.Add(card);
+            DetermineScore(username, data.Hand);
         }
         else {
             throw new InvalidOperationException("Hand does not exist for player " + username);
@@ -102,8 +106,8 @@ public class BlackjackGame : ACardGame {
     public override void DealStartingCards() {
         foreach (var player in Players) {
             List<Card> hand = Deck.DrawCards(2);
-            PlayerHands[player.Username] = hand;
-            DetermineScore(player.Username);
+            PlayerDatas[player.Username].Hand = hand;
+            PlayerDatas[player.Username].Score = DetermineScore(player.Username);
         }
     }
 
@@ -117,16 +121,16 @@ public class BlackjackGame : ACardGame {
             )).ToList(),
             DealerScore = DealerScore,
             Deck = Deck,
-            PlayerHands = PlayerHands.ToDictionary(
-                kvp => kvp.Key,
-                kvp => kvp.Value.Select(card => new Card (
-                    card.Value,
-                    card.Rank,
-                    card.Suit
-                )).ToList()
-            ),
+            // PlayerHands = PlayerHands.ToDictionary(
+            //     kvp => kvp.Key,
+            //     kvp => kvp.Value.Select(card => new Card (
+            //         card.Value,
+            //         card.Rank,
+            //         card.Suit
+            //     )).ToList()
+            // ),
             PlayerDatas = PlayerDatas,
-            Players = Players.Select(player => player.ToDto()).ToList(),
+            // Players = Players.Select(player => player.ToDto()).ToList(),
             CurrentPlayer = CurrentPlayer
         };
     }
@@ -150,9 +154,12 @@ public class BlackjackGame : ACardGame {
         PlayerDatas[username].Status = STATUS_IN_PLAY;
     }
 
-    internal void DetermineScore(string username) {
-        if (PlayerHands.TryGetValue(username, out List<Card>? playerHand)) {
-            DetermineScore(username, playerHand);
+    internal int DetermineScore(string username) {
+        if (PlayerDatas.TryGetValue(username, out PlayerBlackjackData? data)) {
+            if (data.Hand == null) {
+                throw new InvalidOperationException("Hand does not exist for player " + username);
+            }
+            return DetermineScore(data.Hand);
         } else {
             throw new InvalidOperationException("Hand does not exist for player " + username);
         }
