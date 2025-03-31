@@ -91,7 +91,7 @@ public class BlackjackGameTest {
             new Card(10, "10", "Heart")
         ];
 
-        game.PlayerHands[bustPlayer.Username] = bustHand;
+        game.PlayerDatas[bustPlayer.Username].Hand = bustHand;
         game.DetermineScore(bustPlayer.Username);
 
         List<Card> winHand = [
@@ -99,7 +99,7 @@ public class BlackjackGameTest {
             new Card(10, "10", "Diamond"),
         ];
 
-        game.PlayerHands[winnerPlayer.Username] = winHand;
+        game.PlayerDatas[winnerPlayer.Username].Hand = winHand;
         game.DetermineScore(winnerPlayer.Username);
 
         List<Card> loserHand = [
@@ -107,7 +107,7 @@ public class BlackjackGameTest {
             new Card(2, "2", "Diamond"),
         ];
 
-        game.PlayerHands[loserPlayer.Username] = loserHand;
+        game.PlayerDatas[loserPlayer.Username].Hand = loserHand;
         game.DetermineScore(loserPlayer.Username);
 
         List<Card> tieHand = [
@@ -115,7 +115,7 @@ public class BlackjackGameTest {
             new Card(7, "7", "Diamond")
         ];
 
-        game.PlayerHands[tiedPlayer.Username] = tieHand;
+        game.PlayerDatas[tiedPlayer.Username].Hand = tieHand;
         game.DetermineScore(tiedPlayer.Username);
 
         List<Card> blackjackedHand = [
@@ -123,7 +123,7 @@ public class BlackjackGameTest {
             new Card(11, "A", "Diamond"),
         ];
 
-        game.PlayerHands[blackjackedPlayer.Username] = blackjackedHand;
+        game.PlayerDatas[blackjackedPlayer.Username].Hand = blackjackedHand;
         game.DetermineScore(blackjackedPlayer.Username);
 
         game.DealerHand = new List<Card>{
