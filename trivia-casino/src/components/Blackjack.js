@@ -23,9 +23,7 @@ export default function Blackjack() {
   const { setSessionData } = useGameSession();
   let gameInSession = gameState?.currentPlayer !== "";
 
-  React.useEffect(() => {
-    console.log("GameState updated:", gameState);
-  }, [gameState]);
+  React.useEffect(() => {}, [gameState]);
 
   let playerActionButtons;
   if (gameInSession) {
@@ -70,8 +68,6 @@ export default function Blackjack() {
       GameState: gameState,
       Player: user,
     };
-
-    console.log(JSON.stringify(payload));
 
     const response = await fetch("/api/blackjack/hit", {
       method: "POST",

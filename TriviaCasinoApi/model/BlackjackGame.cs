@@ -121,16 +121,7 @@ public class BlackjackGame : ACardGame {
             )).ToList(),
             DealerScore = DealerScore,
             Deck = Deck,
-            // PlayerHands = PlayerHands.ToDictionary(
-            //     kvp => kvp.Key,
-            //     kvp => kvp.Value.Select(card => new Card (
-            //         card.Value,
-            //         card.Rank,
-            //         card.Suit
-            //     )).ToList()
-            // ),
             PlayerDatas = PlayerDatas,
-            // Players = Players.Select(player => player.ToDto()).ToList(),
             CurrentPlayer = CurrentPlayer
         };
     }
