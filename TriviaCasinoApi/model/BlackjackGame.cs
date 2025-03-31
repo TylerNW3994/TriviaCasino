@@ -138,7 +138,7 @@ public class BlackjackGame : ACardGame {
     internal void DetermineScore(string username, List<Card> playerHand) {
         int score = DetermineScore(playerHand);
         PlayerDatas[username].Score = score;
-        bool playerBusted = score > BLACKJACK_MAX_SCORE, playerDrewBlackjack = score == BLACKJACK_MAX_SCORE && PlayerHands[username].Count == 2;
+        bool playerBusted = score > BLACKJACK_MAX_SCORE, playerDrewBlackjack = score == BLACKJACK_MAX_SCORE && PlayerDatas[username]?.Hand?.Count == 2;
 
         if (playerBusted) {
             playersBusted++;
