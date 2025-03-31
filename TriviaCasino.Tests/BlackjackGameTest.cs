@@ -28,7 +28,7 @@ public class BlackjackGameTest {
 
         game.StartGame();
 
-        Assert.Equal(2, game.PlayerHands[player.Username].Count);
+        Assert.Equal(2, game.PlayerDatas[player.Username].Hand.Count);
         Assert.Equal(2, game.DealerHand.Count);
     }
 
@@ -66,7 +66,7 @@ public class BlackjackGameTest {
             new Card(10, "10", "Heart")
         ];
 
-        game.PlayerHands[player.Username] = hand;
+        game.PlayerDatas[player.Username].Hand = hand;
 
         game.DetermineScore(player.Username);
 
