@@ -108,7 +108,7 @@ public class BlackjackGame : ACardGame {
         foreach (var player in Players) {
             List<Card> hand = Deck.DrawCards(2);
             PlayerDatas[player.Username].Hand = hand;
-            PlayerDatas[player.Username].Score = DetermineScore(player.Username);
+            PlayerDatas[player.Username].Score = DetermineScore(hand);
         }
     }
 
@@ -144,17 +144,6 @@ public class BlackjackGame : ACardGame {
         }
 
         PlayerDatas[username].Status = STATUS_IN_PLAY;
-    }
-
-    internal int DetermineScore(string username) {
-        if (PlayerDatas.TryGetValue(username, out PlayerBlackjackData? data)) {
-            if (data.Hand == null) {
-                throw new InvalidOperationException("Hand does not exist for player " + username);
-            }
-            return DetermineScore(data.Hand);
-        } else {
-            throw new InvalidOperationException("Hand does not exist for player " + username);
-        }
     }
 
     internal int DetermineScore(List<Card> hand) {

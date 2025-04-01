@@ -35,8 +35,8 @@ public class BlackjackGameTest {
     [Fact]
     public void ShouldDetermineScoreCorrectly() {
         List<Card> hand = [
-            new Card(2, "2", "Spade"),
-            new Card(2, "2", "Diamond")
+            new(2, "2", "Spade"),
+            new(2, "2", "Diamond")
         ];
 
         Assert.Equal(4, game.DetermineScore(hand));
@@ -45,8 +45,8 @@ public class BlackjackGameTest {
     [Fact]
     public void ShouldDetermineAceValueCorrectly() {
         List<Card> hand = [
-            new Card(11, "A", "Spade"),
-            new Card(11, "A", "Diamond")
+            new(11, "A", "Spade"),
+            new(11, "A", "Diamond")
         ];
 
         Assert.Equal(12, game.DetermineScore(hand));
@@ -61,16 +61,16 @@ public class BlackjackGameTest {
         game.StartGame();
 
         List<Card> hand = [
-            new Card(10, "10", "Spade"),
-            new Card(10, "10", "Diamond"),
-            new Card(10, "10", "Heart")
+            new(10, "10", "Spade"),
+            new(10, "10", "Diamond"),
+            new(10, "10", "Heart")
         ];
 
         game.PlayerDatas[player.Username].Hand = hand;
 
-        game.DetermineScore(player.Username);
+        game.DetermineScore(player.Username, hand);
 
-        Assert.Equal(game.PlayerDatas[player.Username].Status, game.STATUS_BUST);
+        Assert.Equal(game.STATUS_BUST, game.PlayerDatas[player.Username].Status);
     }
 
     [Fact]
@@ -92,7 +92,7 @@ public class BlackjackGameTest {
         ];
 
         game.PlayerDatas[bustPlayer.Username].Hand = bustHand;
-        game.DetermineScore(bustPlayer.Username);
+        game.DetermineScore(bustPlayer.Username, bustHand);
 
         List<Card> winHand = [
             new(10, "10", "Spade"),
@@ -100,7 +100,7 @@ public class BlackjackGameTest {
         ];
 
         game.PlayerDatas[winnerPlayer.Username].Hand = winHand;
-        game.DetermineScore(winnerPlayer.Username);
+        game.DetermineScore(winnerPlayer.Username, winHand);
 
         List<Card> loserHand = [
             new(2, "2", "Spade"),
@@ -108,7 +108,7 @@ public class BlackjackGameTest {
         ];
 
         game.PlayerDatas[loserPlayer.Username].Hand = loserHand;
-        game.DetermineScore(loserPlayer.Username);
+        game.DetermineScore(loserPlayer.Username, loserHand);
 
         List<Card> tieHand = [
             new(10, "10", "Spade"),
@@ -116,7 +116,7 @@ public class BlackjackGameTest {
         ];
 
         game.PlayerDatas[tiedPlayer.Username].Hand = tieHand;
-        game.DetermineScore(tiedPlayer.Username);
+        game.DetermineScore(tiedPlayer.Username, tieHand);
 
         List<Card> blackjackedHand = [
             new(10, "10", "Spade"),
@@ -124,12 +124,12 @@ public class BlackjackGameTest {
         ];
 
         game.PlayerDatas[blackjackedPlayer.Username].Hand = blackjackedHand;
-        game.DetermineScore(blackjackedPlayer.Username);
+        game.DetermineScore(blackjackedPlayer.Username, blackjackedHand);
 
-        game.DealerHand = new List<Card>{
+        game.DealerHand = [
             new(10, "10", "Spade"),
             new(7, "7", "Diamond")
-        };
+        ];
         game.DetermineWinner();
 
         Assert.Equal(game.STATUS_WIN, game.PlayerDatas[winnerPlayer.Username].Status);
