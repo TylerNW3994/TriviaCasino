@@ -24,9 +24,8 @@ public class BlackjackGameService {
     public BlackjackGame Hit(string gameId , Player player) {
         BlackjackGame game = _games[gameId];
 
-        List<Card> hand = game.PlayerHands[player.Username];
+        game.Hit(player.Username);
 
-        hand.Add(game.Deck.DrawCard());
         _games[gameId] = game;
 
         return game;

@@ -13,7 +13,7 @@ namespace TriviaCasinoApi.Controllers {
 
         [HttpPost("newgame")]
         public ApiResponse NewGame([FromBody] GameActionRequest request) {
-            BlackjackGame game = service.CreateNewGame(Guid.NewGuid().ToString(), request.UserToAdd);
+            BlackjackGame game = service.CreateNewGame(Guid.NewGuid().ToString(), request.Player);
 
             var response = new ApiResponse {
                 GameData = game.ToDto(),
@@ -24,7 +24,7 @@ namespace TriviaCasinoApi.Controllers {
 
         [HttpPost("hit")]
         public ApiResponse Hit([FromBody] GameActionRequest request) {
-            BlackjackGame game = service.CreateNewGame(Guid.NewGuid().ToString(), request.UserToAdd);
+            BlackjackGame game = service.Hit(request.GameState.GameId, request.Player);
 
             var response = new ApiResponse {
                 GameData = game.ToDto(),
@@ -35,7 +35,7 @@ namespace TriviaCasinoApi.Controllers {
 
         [HttpPost("stand")]
         public ApiResponse Stand([FromBody] GameActionRequest request) {
-            BlackjackGame game = service.CreateNewGame(Guid.NewGuid().ToString(), request.UserToAdd);
+            BlackjackGame game = service.Stand(request.GameState.GameId);
 
             var response = new ApiResponse {
                 GameData = game.ToDto(),
@@ -53,6 +53,6 @@ namespace TriviaCasinoApi.Controllers {
     public class GameActionRequest {
         public required BlackjackGame GameState { get; set; } = new("");
         public required string Username { get; set; } = string.Empty;
-        public Player? UserToAdd { get; set; }
+        public Player Player { get; set; } = new();
     }
 }

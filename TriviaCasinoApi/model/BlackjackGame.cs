@@ -2,7 +2,7 @@ namespace TriviaCasinoAPI.Model;
 public class BlackjackGame : ACardGame {
     public List<Card> DealerHand { get; set; } = new();
     public int DealerScore { get; set; }
-    public Dictionary<string, PlayerData> PlayerDatas { get; set; } = new();
+    public Dictionary<string, PlayerBlackjackData> PlayerDatas { get; set; } = new();
 
     public BlackjackGame(string gameId) {
         GameId = gameId;
@@ -17,12 +17,15 @@ public class BlackjackGame : ACardGame {
         DealerHand.Clear();
         DealerHand.AddRange(Deck.DrawCards(2));
         DealerScore = DetermineScore(DealerHand);
+        playersBusted = 0;
         
         PlayerDatas.Clear();
         foreach (var player in Players) {
-            PlayerData data = new();
-            data.Score = 0;
-            data.Status = STATUS_IN_PLAY;
+            PlayerBlackjackData data = new() {
+                Score = 0,
+                Status = STATUS_IN_PLAY,
+                Chips = player.Chips
+            };
 
             PlayerDatas.Add(player.Username, data);
         }
@@ -35,6 +38,7 @@ public class BlackjackGame : ACardGame {
 
         if (nextPlayer == null) {
             DetermineWinner();
+            playersBusted = 0;
         }
     }
 
@@ -53,14 +57,14 @@ public class BlackjackGame : ACardGame {
 
         if (DealerScore > BLACKJACK_MAX_SCORE) {
             foreach (var player in PlayerDatas) {
-                PlayerData data = player.Value;
+                PlayerBlackjackData data = player.Value;
                 if (data.Status != STATUS_BUST) {
                     data.Status = STATUS_WIN;
                 }
             }
         } else {
             foreach (var player in PlayerDatas) {
-                PlayerData data = player.Value;
+                PlayerBlackjackData data = player.Value;
                 if (data.Status != STATUS_IN_PLAY) {
                     continue;
                 }
@@ -80,9 +84,12 @@ public class BlackjackGame : ACardGame {
     public void Hit(string username) {
         Card card = Deck.DrawCard();
 
-        if (PlayerHands.TryGetValue(username, out List<Card>? playerHand)) {
-            playerHand.Add(card);
-            DetermineScore(username, playerHand);
+        if (PlayerDatas.TryGetValue(username, out PlayerBlackjackData? data)) {
+            if (data.Hand == null) {
+                throw new InvalidOperationException("Hand does not exist for player " + username);
+            }
+            data.Hand.Add(card);
+            DetermineScore(username, data.Hand);
         }
         else {
             throw new InvalidOperationException("Hand does not exist for player " + username);
@@ -100,8 +107,8 @@ public class BlackjackGame : ACardGame {
     public override void DealStartingCards() {
         foreach (var player in Players) {
             List<Card> hand = Deck.DrawCards(2);
-            PlayerHands[player.Username] = hand;
-            DetermineScore(player.Username);
+            PlayerDatas[player.Username].Hand = hand;
+            PlayerDatas[player.Username].Score = DetermineScore(hand);
         }
     }
 
@@ -115,16 +122,7 @@ public class BlackjackGame : ACardGame {
             )).ToList(),
             DealerScore = DealerScore,
             Deck = Deck,
-            PlayerHands = PlayerHands.ToDictionary(
-                kvp => kvp.Key,
-                kvp => kvp.Value.Select(card => new Card (
-                    card.Value,
-                    card.Rank,
-                    card.Suit
-                )).ToList()
-            ),
             PlayerDatas = PlayerDatas,
-            Players = Players.Select(player => player.ToDto()).ToList(),
             CurrentPlayer = CurrentPlayer
         };
     }
@@ -132,7 +130,7 @@ public class BlackjackGame : ACardGame {
     internal void DetermineScore(string username, List<Card> playerHand) {
         int score = DetermineScore(playerHand);
         PlayerDatas[username].Score = score;
-        bool playerBusted = score > BLACKJACK_MAX_SCORE, playerDrewBlackjack = score == BLACKJACK_MAX_SCORE && PlayerHands[username].Count == 2; 
+        bool playerBusted = score > BLACKJACK_MAX_SCORE, playerDrewBlackjack = score == BLACKJACK_MAX_SCORE && PlayerDatas[username]?.Hand?.Count == 2;
 
         if (playerBusted) {
             playersBusted++;
@@ -146,14 +144,6 @@ public class BlackjackGame : ACardGame {
         }
 
         PlayerDatas[username].Status = STATUS_IN_PLAY;
-    }
-
-    internal void DetermineScore(string username) {
-        if (PlayerHands.TryGetValue(username, out List<Card>? playerHand)) {
-            DetermineScore(username, playerHand);
-        } else {
-            throw new InvalidOperationException("Hand does not exist for player " + username);
-        }
     }
 
     internal int DetermineScore(List<Card> hand) {
@@ -173,11 +163,6 @@ public class BlackjackGame : ACardGame {
         }
 
         return score;
-    }
-
-    public class PlayerData {
-        public int Score { get; set; }
-        public int Status { get; set; }
     }
 
     private int playersBusted = 0;

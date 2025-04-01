@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useGameSession } from "./GameSessionProvider";
 import { useUser } from './UserProvider';
 import BlackjackPlayer from "../blackjackComponents/BlackjackPlayer";
-import Card from "../blackjackComponents/Card";
 
 export default function Blackjack() {
   let defaultGameState = {
@@ -10,8 +9,7 @@ export default function Blackjack() {
     currentPlayer: "",
     dealerHand: [],
     players: []
-  },
-  payload = {};
+  };
 
   const { user } = useUser();
   const [gameState, setGameState] = useState(defaultGameState);
@@ -25,8 +23,7 @@ export default function Blackjack() {
   const { setSessionData } = useGameSession();
   let gameInSession = gameState?.currentPlayer !== "";
 
-  payload.Username = user?.username;
-  payload.GameState = defaultGameState;
+  React.useEffect(() => {}, [gameState]);
 
   let playerActionButtons;
   if (gameInSession) {
@@ -49,7 +46,11 @@ export default function Blackjack() {
   }
 
   async function startNewGame() {
-    payload.UserToAdd = user;
+    const payload = {
+      Username: user?.username,
+      GameState: gameState,
+      Player: user,
+    };
 
     const response = await fetch("/api/blackjack/newgame", {
       method: "POST",
@@ -62,7 +63,11 @@ export default function Blackjack() {
   }
 
   async function handleHit(username) {
-    payload.Username = username;
+    const payload = {
+      Username: user?.username,
+      GameState: gameState,
+      Player: user,
+    };
 
     const response = await fetch("/api/blackjack/hit", {
       method: "POST",
@@ -75,7 +80,11 @@ export default function Blackjack() {
   }
 
   async function handleStand(username) {
-    payload.Username = username;
+    const payload = {
+      Username: user?.username,
+      GameState: gameState,
+      Player: user,
+    };
 
     const response = await fetch("/api/blackjack/stand", {
       method: "POST",
@@ -89,7 +98,6 @@ export default function Blackjack() {
 
   function processData(data) {
     try {
-      payload.GameState = data.gameData;
       setGameState(data.gameData);
       setMessage(data.message);
       setSessionData(data.gameData);
@@ -112,18 +120,18 @@ export default function Blackjack() {
           {message}
           <br></br>
           {playerActionButtons}
-          {gameState.players && (
+          {gameState.playerDatas && (
             <div>
-              <BlackjackPlayer playerData={dealerData} />
-              {gameState.players.map((player) => {
+              <BlackjackPlayer key="dealer" playerData={dealerData} />
+              {Object.entries(gameState.playerDatas).map(([username, player]) => {
                 let playerData = {
-                  playerScore : gameState.playerScores[player.username],
-                  playerHand : gameState.playerHands[player.username],
-                  username : player.username,
+                  playerScore : player.score,
+                  playerHand : player.hand,
+                  username : username,
                   chips : player.chips
                 };
 
-                return <BlackjackPlayer playerData={playerData} />
+                return <BlackjackPlayer key={username} playerData={playerData} />
               })}
             </div>
           )}
