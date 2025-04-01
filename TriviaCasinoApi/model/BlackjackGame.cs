@@ -17,6 +17,7 @@ public class BlackjackGame : ACardGame {
         DealerHand.Clear();
         DealerHand.AddRange(Deck.DrawCards(2));
         DealerScore = DetermineScore(DealerHand);
+        playersBusted = 0;
         
         PlayerDatas.Clear();
         foreach (var player in Players) {
