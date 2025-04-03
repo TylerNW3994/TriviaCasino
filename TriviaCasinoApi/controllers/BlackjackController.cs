@@ -4,12 +4,8 @@ using TriviaCasinoAPI.Model;
 namespace TriviaCasinoApi.Controllers {
     [ApiController]
     [Route("api/[controller]")]
-    public class BlackjackController : ControllerBase {
-        private readonly BlackjackGameService service;
-
-        public BlackjackController(BlackjackGameService gameService) {
-            service = gameService;
-        }
+    public class BlackjackController(BlackjackGameService gameService) : ControllerBase {
+        private readonly BlackjackGameService service = gameService;
 
         [HttpPost("newgame")]
         public ApiResponse NewGame([FromBody] GameActionRequest request) {
