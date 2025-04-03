@@ -4,11 +4,17 @@ public abstract class AGame {
     public string Name { set; get; } = "";
     public string Winner { set; get; } = "";
     public GameState Status { protected set; get; } = GameState.NotStarted;
-    public List<Player> Players { set; get; } = new();
+    public List<Player> Players { set; get; } = [];
     public string CurrentPlayer { get; set; } = string.Empty;
 
     public abstract void DetermineWinner();
     public abstract void PlayAgain();
+
+    public void AdjustChips() {
+        foreach (var player in Players) {
+            player.Chips += (int)(player.Bet * player.BetMultiplier);
+        }
+    }
 
     public void EndGame() {
         Status = GameState.Completed;

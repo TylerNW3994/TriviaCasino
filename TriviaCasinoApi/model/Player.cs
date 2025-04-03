@@ -10,6 +10,8 @@ public class Player {
     public int GamesWon { private set; get; }
     public int GamesPlayed { private set; get; }
     public int Chips { set; get; }
+    public int Bet { set; get; }
+    public double BetMultiplier { set; get; }
 
     public void IncreaseGamesWon() {
         GamesWon++;
