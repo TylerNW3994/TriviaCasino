@@ -115,7 +115,7 @@ export default function Blackjack() {
   function processData(data) {
     try {
       setGameState(data.gameData);
-      setMessage(data.message);
+      setMessage(data.gameData.message);
       setSessionData(data.gameData);
 
       setDealerData({
