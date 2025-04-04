@@ -28,7 +28,7 @@ public class BlackjackGameTest {
 
         game.StartGame();
 
-        Assert.Equal(2, game.PlayerDatas[player.Username].Hand.Count);
+        Assert.Equal(2, game.PlayerDatas[player.Username]?.Hand?.Count);
         Assert.Equal(2, game.DealerHand.Count);
     }
 

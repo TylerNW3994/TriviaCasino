@@ -19,9 +19,10 @@ export default function Blackjack() {
     username: "Dealer",
     chips: null
   });
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("Welcome " + user?.username);
   const { setSessionData } = useGameSession();
   let gameInSession = gameState?.currentPlayer !== "";
+  const [betAmount, setBetAmount] = useState(0);
 
   React.useEffect(() => {}, [gameState]);
 
@@ -40,16 +41,23 @@ export default function Blackjack() {
   } else {
     playerActionButtons = (
       <>
+        <input
+          type="number"
+          placeholder="Enter your bet"
+          value={betAmount}
+          onChange={(e) => setBetAmount(sanitizeBetAmount(e.target.value))}
+        />
         <button onClick={startNewGame}>New Game</button>
       </>
     );
   }
 
   async function startNewGame() {
+    user.Bet = betAmount;
     const payload = {
       Username: user?.username,
       GameState: gameState,
-      Player: user,
+      Player: user
     };
 
     const response = await fetch("/api/blackjack/newgame", {
@@ -60,6 +68,14 @@ export default function Blackjack() {
 
     const data = await response.json();
     processData(data);
+  }
+
+  function sanitizeBetAmount(bet) {
+    if (bet > user.chips) {
+      return user.chips;
+    } else {
+      return Math.abs(parseInt(bet));
+    }
   }
 
   async function handleHit(username) {
@@ -99,7 +115,7 @@ export default function Blackjack() {
   function processData(data) {
     try {
       setGameState(data.gameData);
-      setMessage(data.message);
+      setMessage(data.gameData.message);
       setSessionData(data.gameData);
 
       setDealerData({

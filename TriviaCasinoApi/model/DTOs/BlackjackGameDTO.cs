@@ -6,5 +6,6 @@ namespace TriviaCasinoAPI.Model {
         public required Deck Deck { get; set; }
         public required Dictionary<string, PlayerBlackjackData> PlayerDatas { get; set; }
         public required string CurrentPlayer { get; set; }
+        public required string Message { get; set; }
     }
 }

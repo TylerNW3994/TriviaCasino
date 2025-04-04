@@ -4,11 +4,23 @@ public abstract class AGame {
     public string Name { set; get; } = "";
     public string Winner { set; get; } = "";
     public GameState Status { protected set; get; } = GameState.NotStarted;
-    public List<Player> Players { set; get; } = new();
+    public List<Player> Players { set; get; } = [];
     public string CurrentPlayer { get; set; } = string.Empty;
 
     public abstract void DetermineWinner();
     public abstract void PlayAgain();
+
+    public void AdjustChips<T>(Dictionary<string, T> playerDatas) where T : IPlayerGameData {
+        foreach (var player in Players) {
+            var username = player.Username;
+            if (!playerDatas.ContainsKey(username))
+                continue;
+
+            var data = playerDatas[username];
+            player.Chips += (int)(data.Bet * data.BetMultiplier);
+            data.SetChips(player.Chips);
+        }
+    }
 
     public void EndGame() {
         Status = GameState.Completed;

@@ -18,13 +18,15 @@ public class BlackjackGame : ACardGame {
         DealerHand.AddRange(Deck.DrawCards(2));
         DealerScore = DetermineScore(DealerHand);
         playersBusted = 0;
+        Message = "New Game Started.";
         
         PlayerDatas.Clear();
         foreach (var player in Players) {
             PlayerBlackjackData data = new() {
                 Score = 0,
                 Status = STATUS_IN_PLAY,
-                Chips = player.Chips
+                Chips = player.Chips,
+                Bet = player.Bet
             };
 
             PlayerDatas.Add(player.Username, data);
@@ -38,6 +40,7 @@ public class BlackjackGame : ACardGame {
 
         if (nextPlayer == null) {
             DetermineWinner();
+            AdjustChips(PlayerDatas);
             playersBusted = 0;
         }
     }
@@ -78,6 +81,10 @@ public class BlackjackGame : ACardGame {
                     data.Status = STATUS_LOSE;
                 }
             }
+        }
+
+        foreach (var player in Players) {
+            player.BetMultiplier = PlayerDatas[player.Username].Status;
         }
     }
 
@@ -123,7 +130,8 @@ public class BlackjackGame : ACardGame {
             DealerScore = DealerScore,
             Deck = Deck,
             PlayerDatas = PlayerDatas,
-            CurrentPlayer = CurrentPlayer
+            CurrentPlayer = CurrentPlayer,
+            Message = Message
         };
     }
 
@@ -166,7 +174,8 @@ public class BlackjackGame : ACardGame {
     }
 
     private int playersBusted = 0;
+    private string Message = "";
 
     private readonly int BLACKJACK_MAX_SCORE = 21, ACE_SUBTRACTOR = 10, DEALER_CUTOFF = 17;
-    internal readonly int STATUS_BUST = -1, STATUS_LOSE = -1, STATUS_IN_PLAY = 0, STATUS_TIE = 0, STATUS_WIN = 1, STATUS_BLACKJACK = 2;
+    internal readonly double STATUS_BUST = -1, STATUS_LOSE = -1, STATUS_IN_PLAY = 0, STATUS_TIE = 0, STATUS_WIN = 1, STATUS_BLACKJACK = 1.5;
 }
