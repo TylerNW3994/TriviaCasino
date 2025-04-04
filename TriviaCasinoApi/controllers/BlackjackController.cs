@@ -12,8 +12,7 @@ namespace TriviaCasinoApi.Controllers {
             BlackjackGame game = service.CreateNewGame(Guid.NewGuid().ToString(), request.Player);
 
             var response = new ApiResponse {
-                GameData = game.ToDto(),
-                Message = "New Game Started"
+                GameData = game.ToDto()
             };
             return response;
         }
@@ -23,8 +22,7 @@ namespace TriviaCasinoApi.Controllers {
             BlackjackGame game = service.Hit(request.GameState.GameId, request.Player);
 
             var response = new ApiResponse {
-                GameData = game.ToDto(),
-                Message = request.Username + " hit!"
+                GameData = game.ToDto()
             };
             return response;
         }
@@ -34,8 +32,7 @@ namespace TriviaCasinoApi.Controllers {
             BlackjackGame game = service.Stand(request.GameState.GameId);
 
             var response = new ApiResponse {
-                GameData = game.ToDto(),
-                Message = request.Username + " stands! Moving to next player..."
+                GameData = game.ToDto()
             };
             return response;
         }
@@ -43,7 +40,6 @@ namespace TriviaCasinoApi.Controllers {
 
     public class ApiResponse {
         public required BlackjackGameDto GameData { get; set; }
-        public required string Message { get; set; }
     }
 
     public class GameActionRequest {
