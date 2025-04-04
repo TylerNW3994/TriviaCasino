@@ -10,9 +10,15 @@ public abstract class AGame {
     public abstract void DetermineWinner();
     public abstract void PlayAgain();
 
-    public void AdjustChips() {
+    public void AdjustChips<T>(Dictionary<string, T> playerDatas) where T : IPlayerGameData {
         foreach (var player in Players) {
-            player.Chips += (int)(player.Bet * player.BetMultiplier);
+            var username = player.Username;
+            if (!playerDatas.ContainsKey(username))
+                continue;
+
+            var data = playerDatas[username];
+            player.Chips += (int)(data.Bet * data.BetMultiplier);
+            data.SetChips(player.Chips);
         }
     }
 
