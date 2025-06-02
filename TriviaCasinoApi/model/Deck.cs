@@ -1,6 +1,6 @@
 namespace TriviaCasinoAPI.Model;
 public class Deck {
-    public Stack<Card> cards { get; set; } = new();
+    public Stack<Card> Cards { get; set; } = new();
     public DeckType deckType;
 
     public Deck ShuffleNewDeck() {
@@ -18,7 +18,7 @@ public class Deck {
     }
 
     public void ShuffleDeck() {
-        List<Card> cardList = cards.ToList();
+        List<Card> cardList = Cards.ToList();
         Random rng = new();
 
         for (int i = cardList.Count - 1; i > 0; i--) {
@@ -26,7 +26,7 @@ public class Deck {
             (cardList[i], cardList[j]) = (cardList[j], cardList[i]);
         }
 
-        cards = new Stack<Card>(cardList);
+        Cards = new Stack<Card>(cardList);
     }
 
     public Deck CreateStandardDeck() {
@@ -40,8 +40,8 @@ public class Deck {
                 }
             }
         }
-        
-        cards = new Stack<Card>(cardList);
+    
+        Cards = new Stack<Card>(cardList);
         return this;
     }
 
@@ -60,11 +60,11 @@ public class Deck {
     }
 
     public Card DrawCard() {
-        if (cards.Count == 0) {
+        if (Cards.Count == 0) {
             throw new InvalidOperationException("The deck is empty");
         }
 
-        return cards.Pop();
+        return Cards.Pop();
     }
 
     private readonly Dictionary<int, List<string>> STANDARD_DECK_CARDS = new() {
