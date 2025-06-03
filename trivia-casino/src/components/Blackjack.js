@@ -70,6 +70,14 @@ export default function Blackjack() {
     processData(data);
   }
 
+  /**
+   * Sanitizes the bet amount by ensuring it does not exceed the user's available chips.
+   * If the bet is greater than the user's chips, it returns the maximum allowable bet.
+   * Otherwise, it returns the absolute integer value of the bet.
+   *
+   * @param {number} bet - The proposed bet amount.
+   * @return {number} - The sanitized bet amount, adjusted to not exceed the user's chips.
+   */
   function sanitizeBetAmount(bet) {
     if (bet > user.chips) {
       return user.chips;
