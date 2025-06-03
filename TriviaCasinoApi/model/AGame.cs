@@ -9,9 +9,14 @@ public abstract class AGame {
 
     public abstract void DetermineWinner();
     public abstract void PlayAgain();
+    public abstract void StartGame();
+    public abstract void Initialize();
+    public abstract AGameDTO ToDto();
 
-    public void AdjustChips<T>(Dictionary<string, T> playerDatas) where T : IPlayerGameData {
-        foreach (var player in Players) {
+    public void AdjustChips<T>(Dictionary<string, T> playerDatas) where T : IPlayerGameData
+    {
+        foreach (var player in Players)
+        {
             var username = player.Username;
             if (!playerDatas.ContainsKey(username))
                 continue;
