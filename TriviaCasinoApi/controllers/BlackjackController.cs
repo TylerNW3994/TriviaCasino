@@ -1,50 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
-using TriviaCasinoAPI.Model;
+using TriviaCasinoApi.Model;
+using TriviaCasinoApi.services;
 
-namespace TriviaCasinoApi.Controllers {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class BlackjackController(BlackjackGameService gameService) : ControllerBase {
-        private readonly BlackjackGameService service = gameService;
+namespace TriviaCasinoApi.Controllers;
+[ApiController]
+[Route("api/[controller]")]
+public class BlackjackController : GameController {
+    private readonly BlackjackGameService service;
 
-        [HttpPost("newgame")]
-        public ApiResponse NewGame([FromBody] GameActionRequest request) {
-            BlackjackGame game = service.CreateNewGame(Guid.NewGuid().ToString(), request.Player);
-
-            var response = new ApiResponse {
-                GameData = game.ToDto()
-            };
-            return response;
-        }
-
-        [HttpPost("hit")]
-        public ApiResponse Hit([FromBody] GameActionRequest request) {
-            BlackjackGame game = service.Hit(request.GameState.GameId, request.Player);
-
-            var response = new ApiResponse {
-                GameData = game.ToDto()
-            };
-            return response;
-        }
-
-        [HttpPost("stand")]
-        public ApiResponse Stand([FromBody] GameActionRequest request) {
-            BlackjackGame game = service.Stand(request.GameState.GameId);
-
-            var response = new ApiResponse {
-                GameData = game.ToDto()
-            };
-            return response;
-        }
+    public BlackjackController(BlackjackGameService gameService) : base(gameService) {
+        service = gameService;
     }
 
-    public class ApiResponse {
-        public required BlackjackGameDto GameData { get; set; }
+    [HttpPost("hit")]
+    public ApiResponse Hit([FromBody] GameActionRequest request) {
+        BlackjackGame game = service.Hit(request.GameState.GameId, request.Player);
+
+        var response = new ApiResponse(game.ToApiResponseDto());
+        return response;
     }
 
-    public class GameActionRequest {
-        public required BlackjackGame GameState { get; set; } = new("");
-        public required string Username { get; set; } = string.Empty;
-        public Player Player { get; set; } = new();
+    [HttpPost("stand")]
+    public ApiResponse Stand([FromBody] GameActionRequest request) {
+        BlackjackGame game = service.Stand(request.GameState.GameId);
+
+        var response = new ApiResponse(game.ToApiResponseDto());
+        return response;
     }
 }
