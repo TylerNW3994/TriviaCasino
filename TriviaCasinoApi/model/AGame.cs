@@ -3,7 +3,7 @@ public abstract class AGame {
     public string GameId { set; get; } = "";
     public string Name { set; get; } = "";
     public string Winner { set; get; } = "";
-    public GameState Status { protected set; get; } = GameState.NotStarted;
+    public GameState State { protected set; get; } = GameState.NotStarted;
     public List<Player> Players { set; get; } = [];
     public string CurrentPlayer { get; set; } = string.Empty;
 
@@ -12,6 +12,7 @@ public abstract class AGame {
     public abstract void StartGame();
     public abstract void Initialize();
     public abstract AGameDTO ToDto();
+    public abstract GameDTO ToApiResponseDto();
 
     public void AdjustChips<T>(Dictionary<string, T> playerDatas) where T : IPlayerGameData
     {
@@ -28,7 +29,7 @@ public abstract class AGame {
     }
 
     public void EndGame() {
-        Status = GameState.Completed;
+        State = GameState.Completed;
     }
 
     public void AddPlayer(Player player) {
