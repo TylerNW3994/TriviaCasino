@@ -1,5 +1,5 @@
 using TriviaCasinoApi.Controllers;
-using TriviaCasinoAPI.Model;
+using TriviaCasinoApi.Model;
 namespace TriviaCasino.Tests;
 
 public class BlackjackGameTest {

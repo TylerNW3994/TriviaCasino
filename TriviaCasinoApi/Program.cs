@@ -1,4 +1,5 @@
 using System.Text.Json;
+using TriviaCasinoApi.services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddCors(options => {
     });
 });
 
+builder.Services.AddSingleton<GameService>();
 builder.Services.AddSingleton<BlackjackGameService>();
 
 var app = builder.Build();

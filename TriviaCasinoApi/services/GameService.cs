@@ -1,5 +1,5 @@
 using Microsoft.Identity.Client;
-using TriviaCasinoAPI.Model;
+using TriviaCasinoApi.Model;
 
 public class GameService {
     private Dictionary<string, AGame> games { get; set; } = new();
@@ -32,7 +32,7 @@ public class GameService {
         game.Initialize();
         game.StartGame();
 
-        games[gameId] = game;
+        UpdateGame(gameId, game);
         return game;
     }
     

@@ -1,4 +1,4 @@
-﻿using TriviaCasinoAPI.Model;
+﻿using TriviaCasinoApi.Model;
 namespace TriviaCasino.Tests;
 
 public class DeckTest {

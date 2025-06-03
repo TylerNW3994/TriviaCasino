@@ -1,4 +1,4 @@
-namespace TriviaCasinoAPI.Model;
+namespace TriviaCasinoApi.Model;
 
 public class BlackjackGame : ACardGame {
     public List<Card> DealerHand { get; set; } = [];
@@ -151,7 +151,7 @@ public class BlackjackGame : ACardGame {
     public override GameDTO ToApiResponseDto() {
         return new GameDTO {
             GameType = GameType.Blackjack,
-            DealerDTO = new DealerDTO{ Hand = DealerHand, Score = DealerScore },
+            DealerDTO = new DealerDTO { Hand = DealerHand, Score = DealerScore },
             PlayerDTOs = Players.Select(player => player.ToPlayerCardGameDto(PlayerDatas[player.Username])).Cast<APlayerDTO>().ToList()
         };
     }

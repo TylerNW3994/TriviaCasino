@@ -1,4 +1,4 @@
-namespace TriviaCasinoAPI.Model;
+namespace TriviaCasinoApi.Model;
 public class Deck {
     public Stack<Card> Cards { get; set; } = new();
     public DeckType deckType;

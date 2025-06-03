@@ -1,4 +1,4 @@
-namespace TriviaCasinoAPI.Model;
+namespace TriviaCasinoApi.Model;
 
 public class PlayerCardGameDTO : APlayerDTO {
     public List<Card>? Hand { get; set; }

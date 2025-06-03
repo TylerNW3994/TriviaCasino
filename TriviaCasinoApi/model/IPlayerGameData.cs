@@ -1,4 +1,4 @@
-namespace TriviaCasinoAPI.Model;
+namespace TriviaCasinoApi.Model;
 public interface IPlayerGameData {
     int Bet { get; }
     double BetMultiplier { get; }

@@ -1,4 +1,4 @@
-namespace TriviaCasinoAPI.Model;
+namespace TriviaCasinoApi.Model;
 public abstract class AGame {
     public string GameId { set; get; } = "";
     public string Name { set; get; } = "";
@@ -14,10 +14,8 @@ public abstract class AGame {
     public abstract AGameDTO ToDto();
     public abstract GameDTO ToApiResponseDto();
 
-    public void AdjustChips<T>(Dictionary<string, T> playerDatas) where T : IPlayerGameData
-    {
-        foreach (var player in Players)
-        {
+    public void AdjustChips<T>(Dictionary<string, T> playerDatas) where T : IPlayerGameData {
+        foreach (var player in Players) {
             var username = player.Username;
             if (!playerDatas.ContainsKey(username))
                 continue;
@@ -41,11 +39,7 @@ public abstract class AGame {
     }
 
     public Player GetPlayerByUsername(string username) {
-        Player? player = Players.Find(p => p.Username == username);
-
-        if (player == null) {
-            throw new InvalidOperationException("Player not found with username: " + username);
-        }
+        Player? player = Players.Find(p => p.Username == username) ?? throw new InvalidOperationException("Player not found with username: " + username);
         return player;
     }
 

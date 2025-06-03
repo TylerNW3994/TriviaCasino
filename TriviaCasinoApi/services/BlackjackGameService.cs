@@ -1,6 +1,6 @@
-using TriviaCasinoAPI.Model;
-
+using TriviaCasinoApi.Model;
 namespace TriviaCasinoApi.services;
+
 public class BlackjackGameService : GameService {
     public BlackjackGame Hit(string gameId, Player player) {
         BlackjackGame game = (GetGame(gameId) as BlackjackGame)!;
