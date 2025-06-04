@@ -4,7 +4,7 @@ using TriviaCasinoApi.services;
 
 namespace TriviaCasinoApi.Controllers;
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/Blackjack")]
 public class BlackjackController : GameController {
     private readonly BlackjackGameService service;
 
