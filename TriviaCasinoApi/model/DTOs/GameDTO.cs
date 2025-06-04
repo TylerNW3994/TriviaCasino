@@ -1,6 +1,8 @@
-namespace TriviaCasinoAPI.Model;
+namespace TriviaCasinoApi.Model;
+
 public class GameDTO {
+    public string GameId;
     public GameType GameType;
     public DealerDTO? DealerDTO;
-    public required List<PlayerDTO> PlayerDTOs;
+    public required List<APlayerDTO> PlayerDTOs;
 }
