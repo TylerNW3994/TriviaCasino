@@ -10,12 +10,20 @@ builder.Services.AddControllers().AddJsonOptions(options => {
     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
 
-builder.Services.AddCors(options => {
-    options.AddPolicy("AllowReactApp", builder => {
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", builder =>
+    {
         builder.WithOrigins("http://localhost:3000")
                .AllowAnyMethod()
                .AllowAnyHeader();
     });
+});
+
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5000);
 });
 
 builder.Services.AddSingleton<GameService>();

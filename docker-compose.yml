@@ -1,0 +1,18 @@
+services:
+  frontend:
+    build: ./trivia-casino
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./trivia-casino:/src:/app
+    depends_on:
+      - api
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+  api:
+    build: ./TriviaCasinoApi
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
