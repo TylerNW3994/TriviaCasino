@@ -11,7 +11,6 @@ public abstract class AGame {
     public abstract void PlayAgain();
     public abstract void StartGame();
     public abstract void Initialize();
-    public abstract AGameDTO ToDto();
     public abstract GameDTO ToApiResponseDto();
 
     public void AdjustChips<T>(Dictionary<string, T> playerDatas) where T : IPlayerGameData {
