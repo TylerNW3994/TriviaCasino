@@ -20,7 +20,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.ListenAnyIP(5000);
