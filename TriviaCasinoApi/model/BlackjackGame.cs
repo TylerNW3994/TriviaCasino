@@ -131,28 +131,17 @@ public class BlackjackGame : ACardGame {
             PlayerDatas[player.Username].Score = DetermineScore(hand);
         }
     }
-
-    public override BlackjackGameDTO ToDto() {
-        return new BlackjackGameDTO {
-            GameId = GameId,
-            DealerHand = DealerHand.Select(card => new Card(
-                card.Value,
-                card.Rank,
-                card.Suit
-            )).ToList(),
-            DealerScore = DealerScore,
-            Deck = Deck,
-            PlayerDatas = PlayerDatas,
-            CurrentPlayer = CurrentPlayer,
-            Message = Message
-        };
-    }
-
+    
     public override GameDTO ToApiResponseDto() {
-        return new GameDTO {
+        return new GameDTO
+        {
+            GameId = GameId,
             GameType = GameType.Blackjack,
             DealerDTO = new DealerDTO { Hand = DealerHand, Score = DealerScore },
-            PlayerDTOs = Players.Select(player => player.ToPlayerCardGameDto(PlayerDatas[player.Username])).Cast<APlayerDTO>().ToList()
+            PlayerDTOs = Players.Select(
+                player => player.ToPlayerCardGameDto(PlayerDatas[player.Username])
+            ).ToList(),
+            Message = Message
         };
     }
 
