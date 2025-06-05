@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-namespace TriviaCasinoAPI.Model;
+namespace TriviaCasinoApi.Model;
 
 public class Player {
     [Key]
@@ -21,12 +21,14 @@ public class Player {
         GamesPlayed++;
     }
 
-    public PlayerDTO ToDto() {
-        return new PlayerDTO {
-            UserId = UserId,
+    public PlayerCardGameDTO ToPlayerCardGameDto(PlayerBlackjackData data) {
+        return new PlayerCardGameDTO
+        {
             Username = Username,
-            Chips = Chips,
-            GamesWon = GamesWon
+            Hand = data.Hand,
+            Score = data.Score,
+            Bet = data.Bet,
+            Chips = data.Chips
         };
     }
 }

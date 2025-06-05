@@ -1,44 +1,21 @@
-using TriviaCasinoAPI.Model;
+using TriviaCasinoApi.Model;
+namespace TriviaCasinoApi.services;
 
-public class BlackjackGameService {
-    private Dictionary<string, BlackjackGame> _games = new();
-
-    public BlackjackGame CreateNewGame(string gameId, Player player) {
-        var game = new BlackjackGame(gameId);
-        
-        if (player != null) {
-            game.AddPlayer(player);
-            
-            if (game.CurrentPlayer == string.Empty) {
-                game.CurrentPlayer = player.Username;
-            }
-        }
-        
-        game.Initialize();
-        game.StartGame();
-
-        _games[gameId] = game;
-        return game;
-    }
-
-    public BlackjackGame Hit(string gameId , Player player) {
-        BlackjackGame game = _games[gameId];
+public class BlackjackGameService : GameService {
+    public BlackjackGame Hit(string gameId, Player player) {
+        BlackjackGame game = (GetGame(gameId) as BlackjackGame)!;
 
         game.Hit(player.Username);
 
-        _games[gameId] = game;
+        UpdateGame(gameId, game);
 
         return game;
     }
 
     public BlackjackGame Stand(string gameId) {
-        BlackjackGame game = _games[gameId];
+        BlackjackGame game = (GetGame(gameId) as BlackjackGame)!;
         game.NextPlayer();
 
         return game;
-    }
-
-    public BlackjackGame? GetGame(string gameId) {
-        return _games.TryGetValue(gameId, out var game) ? game : null;
     }
 }

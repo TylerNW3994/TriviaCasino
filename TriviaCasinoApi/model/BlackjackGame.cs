@@ -1,25 +1,26 @@
-namespace TriviaCasinoAPI.Model;
+namespace TriviaCasinoApi.Model;
+
 public class BlackjackGame : ACardGame {
-    public List<Card> DealerHand { get; set; } = new();
+    public List<Card> DealerHand { get; set; } = [];
     public int DealerScore { get; set; }
-    public Dictionary<string, PlayerBlackjackData> PlayerDatas { get; set; } = new();
+    public Dictionary<string, PlayerBlackjackData> PlayerDatas { get; set; } = [];
 
     public BlackjackGame(string gameId) {
         GameId = gameId;
     }
 
-    public void Initialize() {
+    public override void Initialize() {
         Deck.deckType = DeckType.STANDARD;
     }
 
-    public void StartGame() {
+    public override void StartGame() {
         Deck = Deck.ShuffleNewDeck();
         DealerHand.Clear();
         DealerHand.AddRange(Deck.DrawCards(2));
         DealerScore = DetermineScore(DealerHand);
         playersBusted = 0;
         Message = "New Game Started.";
-        
+
         PlayerDatas.Clear();
         foreach (var player in Players) {
             PlayerBlackjackData data = new() {
@@ -35,25 +36,29 @@ public class BlackjackGame : ACardGame {
         DealStartingCards();
     }
 
-    public void NextPlayer() {
+    public void NextPlayer()
+    {
         Player? nextPlayer = GetNextPlayer();
 
-        if (nextPlayer == null) {
+        if (nextPlayer == null)
+        {
             DetermineWinner();
             AdjustChips(PlayerDatas);
-            playersBusted = 0;
         }
     }
 
-    public override void DetermineWinner() {
+    public override void DetermineWinner()
+    {
         // Players already lost, no need to determine Dealer information
-        if (playersBusted == Players.Count) {
+        if (playersBusted == Players.Count)
+        {
             return;
         }
 
         DealerScore = DetermineScore(DealerHand);
 
-        while (DealerScore < DEALER_CUTOFF) {
+        while (DealerScore < DEALER_CUTOFF)
+        {
             DealerHand.Add(Deck.DrawCard());
             DealerScore = DetermineScore(DealerHand);
         }
@@ -65,7 +70,8 @@ public class BlackjackGame : ACardGame {
                     data.Status = STATUS_WIN;
                 }
             }
-        } else {
+        }
+        else {
             foreach (var player in PlayerDatas) {
                 PlayerBlackjackData data = player.Value;
                 if (data.Status != STATUS_IN_PLAY) {
@@ -75,9 +81,11 @@ public class BlackjackGame : ACardGame {
                 int playerScore = data.Score;
                 if (playerScore > DealerScore) {
                     data.Status = STATUS_WIN;
-                } else if (playerScore == DealerScore) {
+                }
+                else if (playerScore == DealerScore) {
                     data.Status = STATUS_TIE;
-                } else {
+                }
+                else {
                     data.Status = STATUS_LOSE;
                 }
             }
@@ -88,27 +96,32 @@ public class BlackjackGame : ACardGame {
         }
     }
 
-    public void Hit(string username) {
+    public void Hit(string username)
+    {
         Card card = Deck.DrawCard();
 
-        if (PlayerDatas.TryGetValue(username, out PlayerBlackjackData? data)) {
-            if (data.Hand == null) {
+        if (PlayerDatas.TryGetValue(username, out PlayerBlackjackData? data))
+        {
+            if (data.Hand == null)
+            {
                 throw new InvalidOperationException("Hand does not exist for player " + username);
             }
             data.Hand.Add(card);
             DetermineScore(username, data.Hand);
         }
-        else {
+        else
+        {
             throw new InvalidOperationException("Hand does not exist for player " + username);
         }
     }
 
-    public void Stand() {
+    public void Stand()
+    {
         NextPlayer();
     }
 
-    public void SetStatus(GameState status) {
-        Status = status;
+    public void SetState(GameState state) {
+        State = state;
     }
 
     public override void DealStartingCards() {
@@ -118,19 +131,16 @@ public class BlackjackGame : ACardGame {
             PlayerDatas[player.Username].Score = DetermineScore(hand);
         }
     }
-
-    public BlackjackGameDto ToDto() {
-        return new BlackjackGameDto {
+    
+    public override GameDTO ToApiResponseDto() {
+        return new GameDTO
+        {
             GameId = GameId,
-            DealerHand = DealerHand.Select(card => new Card (
-                card.Value,
-                card.Rank,
-                card.Suit
-            )).ToList(),
-            DealerScore = DealerScore,
-            Deck = Deck,
-            PlayerDatas = PlayerDatas,
-            CurrentPlayer = CurrentPlayer,
+            GameType = GameType.Blackjack,
+            DealerDTO = new DealerDTO { Hand = DealerHand, Score = DealerScore },
+            PlayerDTOs = Players.Select(
+                player => player.ToPlayerCardGameDto(PlayerDatas[player.Username])
+            ).ToList(),
             Message = Message
         };
     }
@@ -138,14 +148,16 @@ public class BlackjackGame : ACardGame {
     internal void DetermineScore(string username, List<Card> playerHand) {
         int score = DetermineScore(playerHand);
         PlayerDatas[username].Score = score;
-        bool playerBusted = score > BLACKJACK_MAX_SCORE, playerDrewBlackjack = score == BLACKJACK_MAX_SCORE && PlayerDatas[username]?.Hand?.Count == 2;
+        bool playerBusted = score > BLACKJACK_MAX_SCORE,
+            playerDrewBlackjack = score == BLACKJACK_MAX_SCORE && PlayerDatas[username]?.Hand?.Count == 2;
 
         if (playerBusted) {
             playersBusted++;
             PlayerDatas[username].Status = STATUS_BUST;
             NextPlayer();
             return;
-        } else if (playerDrewBlackjack) {
+        }
+        else if (playerDrewBlackjack) {
             PlayerDatas[username].Status = STATUS_BLACKJACK;
             NextPlayer();
             return;

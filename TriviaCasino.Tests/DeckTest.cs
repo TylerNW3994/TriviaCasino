@@ -1,4 +1,4 @@
-﻿using TriviaCasinoAPI.Model;
+﻿using TriviaCasinoApi.Model;
 namespace TriviaCasino.Tests;
 
 public class DeckTest {
@@ -17,7 +17,7 @@ public class DeckTest {
     public void StandardDeckShouldHave52Cards() {
         deck.CreateStandardDeck();
 
-        Assert.Equal(52, deck.cards.Count);
+        Assert.Equal(52, deck.Cards.Count);
     }
 
     [Fact]
@@ -54,9 +54,9 @@ public class DeckTest {
     [Fact]
     public void DeckCountShouldDecreaseAfterDrawing() {
         deck.CreateStandardDeck();
-        int initialCount = deck.cards.Count;
+        int initialCount = deck.Cards.Count;
         deck.DrawCard();
-        Assert.Equal(initialCount - 1, deck.cards.Count);
+        Assert.Equal(initialCount - 1, deck.Cards.Count);
     }
 
     [Fact]
@@ -68,14 +68,14 @@ public class DeckTest {
     [Fact]
     public void ShuffleShouldChangeCardOrder() {
         deck.CreateStandardDeck();
-        var originalOrder = deck.cards.ToArray();
+        var originalOrder = deck.Cards.ToArray();
         deck.ShuffleDeck();
-        var shuffledOrder = deck.cards.ToArray();
+        var shuffledOrder = deck.Cards.ToArray();
         // There's a very small chance the order remains the same after shuffling, so shuffle again.
         // If it's still the same, it's meant to be... or something is wrong.
         if (originalOrder == shuffledOrder) {
             deck.ShuffleDeck();
-            shuffledOrder = deck.cards.ToArray();
+            shuffledOrder = deck.Cards.ToArray();
         }
         
         Assert.NotEqual(originalOrder, shuffledOrder);
@@ -90,7 +90,7 @@ public class DeckTest {
     [Fact]
     public void DrawingAllCardsEmptiesDeck() {
         deck.CreateStandardDeck();
-        int initialCount = deck.cards.Count;
+        int initialCount = deck.Cards.Count;
 
         for (int i = 0; i < initialCount; i++) {
             deck.DrawCard();

@@ -1,4 +1,4 @@
-namespace TriviaCasinoAPI.Model;
+namespace TriviaCasinoApi.Model;
 public abstract class ACardGame : AGame {
     public Deck Deck { set; get; } = new();
     public Dictionary<string, List<Card>> PlayerHands { get; set; } = new();

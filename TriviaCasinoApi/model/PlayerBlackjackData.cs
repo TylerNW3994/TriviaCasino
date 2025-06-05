@@ -1,4 +1,4 @@
-namespace TriviaCasinoAPI.Model;
+namespace TriviaCasinoApi.Model;
 public class PlayerBlackjackData : IPlayerGameData {
     public int Score { get; set; }
     public double Status { get; set; }

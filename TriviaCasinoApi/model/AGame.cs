@@ -1,14 +1,17 @@
-namespace TriviaCasinoAPI.Model;
+namespace TriviaCasinoApi.Model;
 public abstract class AGame {
     public string GameId { set; get; } = "";
     public string Name { set; get; } = "";
     public string Winner { set; get; } = "";
-    public GameState Status { protected set; get; } = GameState.NotStarted;
+    public GameState State { protected set; get; } = GameState.NotStarted;
     public List<Player> Players { set; get; } = [];
     public string CurrentPlayer { get; set; } = string.Empty;
 
     public abstract void DetermineWinner();
     public abstract void PlayAgain();
+    public abstract void StartGame();
+    public abstract void Initialize();
+    public abstract GameDTO ToApiResponseDto();
 
     public void AdjustChips<T>(Dictionary<string, T> playerDatas) where T : IPlayerGameData {
         foreach (var player in Players) {
@@ -23,7 +26,7 @@ public abstract class AGame {
     }
 
     public void EndGame() {
-        Status = GameState.Completed;
+        State = GameState.Completed;
     }
 
     public void AddPlayer(Player player) {
@@ -35,11 +38,7 @@ public abstract class AGame {
     }
 
     public Player GetPlayerByUsername(string username) {
-        Player? player = Players.Find(p => p.Username == username);
-
-        if (player == null) {
-            throw new InvalidOperationException("Player not found with username: " + username);
-        }
+        Player? player = Players.Find(p => p.Username == username) ?? throw new InvalidOperationException("Player not found with username: " + username);
         return player;
     }
 

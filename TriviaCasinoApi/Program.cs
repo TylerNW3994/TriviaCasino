@@ -1,4 +1,5 @@
 using System.Text.Json;
+using TriviaCasinoApi.services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
     serverOptions.ListenAnyIP(5000);
 });
 
+builder.Services.AddSingleton<GameService>();
 builder.Services.AddSingleton<BlackjackGameService>();
 
 var app = builder.Build();
