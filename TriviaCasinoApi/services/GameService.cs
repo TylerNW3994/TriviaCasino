@@ -38,5 +38,5 @@ public class GameService {
     
     protected void UpdateGame(string gameId, AGame game) => games[gameId] = game;
     protected void RemoveGame(string gameId) => games.Remove(gameId);
-    protected AGame GetGame(string gameId) => games.TryGetValue(gameId, out var game) ? game : throw new InvalidOperationException("Game not found");
+    protected AGame GetGame(string gameId) => games.TryGetValue(gameId, out var game) ? game : throw new InvalidOperationException($"Game not found with Id: {gameId}");
 }

@@ -4,7 +4,7 @@ using TriviaCasinoApi.services;
 
 namespace TriviaCasinoApi.Controllers;
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/Blackjack")]
 public class BlackjackController : GameController {
     private readonly BlackjackGameService service;
 
@@ -13,6 +13,18 @@ public class BlackjackController : GameController {
     }
 
     [HttpPost("hit")]
+    public ApiResponse Hit(GameActionRequest request)
+    {
+        return Hit<PlayerCardGameDTO>(request);
+    }
+
+    [HttpPost("stand")]
+    public ApiResponse Stand(GameActionRequest request)
+    {
+        return Stand<PlayerCardGameDTO>(request);
+    }
+
+    [NonAction]
     public ApiResponse Hit<TPlayerDTO>([FromBody] GameActionRequest request) where TPlayerDTO : APlayerDTO {
         BlackjackGame game = service.Hit(request.GameState.GameId, request.Player);
 
@@ -20,7 +32,7 @@ public class BlackjackController : GameController {
         return response;
     }
 
-    [HttpPost("stand")]
+    [NonAction]
     public ApiResponse Stand<TPlayerDTO>([FromBody] GameActionRequest request) where TPlayerDTO : APlayerDTO  {
         BlackjackGame game = service.Stand(request.GameState.GameId);
 

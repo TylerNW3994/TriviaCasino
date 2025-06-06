@@ -141,7 +141,8 @@ public class BlackjackGame : ACardGame {
             PlayerDTOs = Players.Select(
                 player => player.ToPlayerCardGameDto(PlayerDatas[player.Username])
             ).ToList(),
-            Message = Message
+            Message = Message,
+            CurrentPlayer = CurrentPlayer
         };
     }
 

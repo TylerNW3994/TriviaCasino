@@ -107,7 +107,7 @@ export default function Blackjack() {
     };
 
     
-    console.log(JSON.stringify(payload));
+    // console.log(JSON.stringify(payload));
 
     const response = await fetch("/api/blackjack/hit", {
       method: "POST",
