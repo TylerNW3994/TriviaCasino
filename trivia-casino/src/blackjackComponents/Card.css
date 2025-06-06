@@ -18,6 +18,10 @@
     color: #222;
 }
 
+.purple {
+    color: #6c5ce7;
+}
+
 .corner {
     position: absolute;
     width: auto;
