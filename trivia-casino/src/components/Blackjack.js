@@ -42,6 +42,7 @@ export default function Blackjack() {
   } else {
     playerActionButtons = (
       <>
+        <span>Bet: </span>
         <input
           type="number"
           placeholder="Enter your bet"
@@ -105,7 +106,6 @@ export default function Blackjack() {
       GameState: gameState,
       Player: user,
     };
-
     
     // console.log(JSON.stringify(payload));
 
@@ -165,7 +165,7 @@ export default function Blackjack() {
           {playerActionButtons}
           {gameState.playerDTOs && (
             <div>
-              <BlackjackPlayer key="dealer" playerData={dealerData} />
+              <BlackjackPlayer key="dealer" playerData={dealerData} gameInSession={gameInSession} />
               {Object.entries(gameState.playerDTOs).map(([username, player]) => {
                 let playerData = {
                   score : player.score,
