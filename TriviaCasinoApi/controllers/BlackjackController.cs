@@ -34,7 +34,7 @@ public class BlackjackController : GameController {
 
     [NonAction]
     public ApiResponse Stand<TPlayerDTO>([FromBody] GameActionRequest request) where TPlayerDTO : APlayerDTO  {
-        BlackjackGame game = service.Stand(request.GameState.GameId);
+        BlackjackGame game = service.Stand(request.GameState.GameId, request.Player);
 
         var response = new ApiResponse(game.ToApiResponseDto());
         return response;
