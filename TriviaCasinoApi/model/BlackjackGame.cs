@@ -191,7 +191,6 @@ public class BlackjackGame : ACardGame {
     }
 
     private int playersBusted = 0;
-    private string Message = "";
 
     private readonly string HIT = " Hit", STOOD = " Stood", BUST = " Bust", BLACKJACK = " hit Blackjack";
     private readonly int BLACKJACK_MAX_SCORE = 21, ACE_SUBTRACTOR = 10, DEALER_CUTOFF = 17;
