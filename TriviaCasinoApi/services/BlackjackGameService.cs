@@ -12,9 +12,9 @@ public class BlackjackGameService : GameService {
         return game;
     }
 
-    public BlackjackGame Stand(string gameId) {
+    public BlackjackGame Stand(string gameId, Player player) {
         BlackjackGame game = (GetGame(gameId) as BlackjackGame)!;
-        game.NextPlayer();
+        game.Stand(player.Username);
 
         return game;
     }

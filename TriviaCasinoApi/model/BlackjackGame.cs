@@ -107,6 +107,7 @@ public class BlackjackGame : ACardGame {
                 throw new InvalidOperationException("Hand does not exist for player " + username);
             }
             data.Hand.Add(card);
+            Message = username + HIT;
             DetermineScore(username, data.Hand);
         }
         else
@@ -115,8 +116,9 @@ public class BlackjackGame : ACardGame {
         }
     }
 
-    public void Stand()
+    public void Stand(string username)
     {
+        Message = username + STOOD;
         NextPlayer();
     }
 
@@ -141,7 +143,8 @@ public class BlackjackGame : ACardGame {
             PlayerDTOs = Players.Select(
                 player => player.ToPlayerCardGameDto(PlayerDatas[player.Username])
             ).ToList(),
-            Message = Message
+            Message = Message,
+            CurrentPlayer = CurrentPlayer
         };
     }
 
@@ -154,11 +157,13 @@ public class BlackjackGame : ACardGame {
         if (playerBusted) {
             playersBusted++;
             PlayerDatas[username].Status = STATUS_BUST;
+            Message = username + BUST;
             NextPlayer();
             return;
         }
         else if (playerDrewBlackjack) {
             PlayerDatas[username].Status = STATUS_BLACKJACK;
+            Message = username + BLACKJACK;
             NextPlayer();
             return;
         }
@@ -186,8 +191,8 @@ public class BlackjackGame : ACardGame {
     }
 
     private int playersBusted = 0;
-    private string Message = "";
 
+    private readonly string HIT = " Hit", STOOD = " Stood", BUST = " Bust", BLACKJACK = " hit Blackjack";
     private readonly int BLACKJACK_MAX_SCORE = 21, ACE_SUBTRACTOR = 10, DEALER_CUTOFF = 17;
     internal readonly double STATUS_BUST = -1, STATUS_LOSE = -1, STATUS_IN_PLAY = 0, STATUS_TIE = 0, STATUS_WIN = 1, STATUS_BLACKJACK = 1.5;
 }

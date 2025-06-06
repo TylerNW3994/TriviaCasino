@@ -5,7 +5,8 @@ const suitData = {
     Spade:   { symbol: '♠', color: 'black' },
     Club:    { symbol: '♣', color: 'black' },
     Diamond: { symbol: '♦', color: 'red' },
-    Heart:   { symbol: '♥', color: 'red' }
+    Heart:   { symbol: '♥', color: 'red' },
+    Hidden:  { symbol: '?', color: 'purple'}
 };
 
 function Card({ cardData }) {

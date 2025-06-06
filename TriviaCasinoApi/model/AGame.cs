@@ -6,6 +6,7 @@ public abstract class AGame {
     public GameState State { protected set; get; } = GameState.NotStarted;
     public List<Player> Players { set; get; } = [];
     public string CurrentPlayer { get; set; } = string.Empty;
+    public string Message = string.Empty;
 
     public abstract void DetermineWinner();
     public abstract void PlayAgain();
