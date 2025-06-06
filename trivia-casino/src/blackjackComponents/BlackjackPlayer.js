@@ -2,17 +2,15 @@ import React from 'react';
 import Card from "../blackjackComponents/Card";
 
 function BlackjackPlayer({ playerData }) {
+    // console.log(JSON.stringify(playerData));
+
     return (
-        <div>
+        <div key={playerData.username}>
             <h3>{playerData.username}</h3>
-            <p>Score: {playerData.playerScore}</p>
+            <p>Score: {playerData.score}</p>
             <div>
-            {playerData.playerHand.map((card) => {
-                let cardData = {
-                    rank : card.rank,
-                    suit : card.suit
-                }
-                return <Card cardData={cardData} />
+            {playerData.hand.map((card) => {
+                return <Card cardData={card} />
             })}
             </div>
             {playerData.chips != null && (

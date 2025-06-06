@@ -5,6 +5,7 @@ import BlackjackPlayer from "../blackjackComponents/BlackjackPlayer";
 
 export default function Blackjack() {
   let defaultGameState = {
+    gameType: "Blackjack",
     gameId: "",
     currentPlayer: "",
     dealerHand: [],
@@ -56,11 +57,23 @@ export default function Blackjack() {
     user.Bet = betAmount;
     const payload = {
       Username: user?.username,
-      GameState: gameState,
+      GameState: {
+        GameId: "",
+        GameType: "Blackjack",
+        DealerDTO: {},
+        PlayerDTOs: [
+          {
+            Username: user?.username,
+            Bet: betAmount
+          }
+        ]
+      },
       Player: user
     };
 
-    const response = await fetch("/api/game/newgame", {
+    // console.log(JSON.stringify(payload));
+
+    const response = await fetch("/api/blackjack/newgame", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
@@ -93,6 +106,9 @@ export default function Blackjack() {
       Player: user,
     };
 
+    
+    console.log(JSON.stringify(payload));
+
     const response = await fetch("/api/blackjack/hit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -122,13 +138,16 @@ export default function Blackjack() {
 
   function processData(data) {
     try {
-      setGameState(data.gameData);
-      setMessage(data.gameData.message);
-      setSessionData(data.gameData);
+      // console.log(JSON.stringify(data));
+      var gameData = data.data;
+      
+      setGameState(gameData);
+      setMessage(gameData.message);
+      setSessionData(gameData);
 
       setDealerData({
-        playerScore : data.gameData.dealerScore,
-        playerHand : data.gameData.dealerHand,
+        score : gameData.dealerDTO.score,
+        hand : gameData.dealerDTO.hand,
         username : "Dealer",
         chips : null
       });
@@ -144,14 +163,14 @@ export default function Blackjack() {
           {message}
           <br></br>
           {playerActionButtons}
-          {gameState.playerDatas && (
+          {gameState.playerDTOs && (
             <div>
               <BlackjackPlayer key="dealer" playerData={dealerData} />
-              {Object.entries(gameState.playerDatas).map(([username, player]) => {
+              {Object.entries(gameState.playerDTOs).map(([username, player]) => {
                 let playerData = {
-                  playerScore : player.score,
-                  playerHand : player.hand,
-                  username : username,
+                  score : player.score,
+                  hand : player.hand,
+                  username : player.username,
                   chips : player.chips
                 };
 
