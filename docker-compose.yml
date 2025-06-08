@@ -17,3 +17,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - API_URL=http://api:5000
+
+  laravel:
+    build:
+      context: ./laravel-api
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./laravel-api:/app
