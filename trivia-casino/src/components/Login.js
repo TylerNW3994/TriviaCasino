@@ -31,29 +31,41 @@ const Login = () => {
         navigate('/Games');
     }
 
-    async function testLaravelGet(email) {
-        console.log('getting res');
-        const res = await fetch(`http://localhost:8000/api/player/getUser/${email}`);
-        console.log('getting data');
-        const data = await res.json();
+    function handleLogin(e) {
+        e.preventDefault();
 
-        console.log(data);
-    }
+        if (email === '' || password === '') {
+            console.error("Please fill in all fields.");
+            return;
+        }
 
-    async function testLaravelCreate(userId, displayName) {
-        const res = await fetch(`http://localhost:8000/api/player/createPlayer`, {
+        let loginData = {
+            email : email,
+            password : password
+        };
+
+        fetch('http://localhost:8000/api/player/getUser', {
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-            user_id: userId,
-            display_name: displayName,
-            }),
-        });
+            body: JSON.stringify(loginData)
+        })
+            .then((response) => response.json())
+            .then((data) => console.log(data))
+            .catch((error) => console.error(error));
+    }
 
-        const data = await res.json();
-        console.log(data);
+    function handleRegister(e) {
+        e.preventDefault();
+
+        if (registerConfirmPassword === '' || registerDisplayName === '' || registerPassword === '' || registerEmail === '') {
+            console.error("Please fill in all fields.");
+            return;
+        } else if (registerPassword !== registerConfirmPassword) {
+            console.error("Passwords do not match!");
+            return;
+        }
     }
 
     return (
@@ -61,75 +73,73 @@ const Login = () => {
             <div className="row">
                 <div className="col-md-6">
                     <h2>Login</h2>
-                    <form>
-                    <label>
-                        Email:
-                        <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </label>
-                    <br />
-                    <label>
-                        Password:
-                        <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </label>
-                    <br />
-                    <button type="submit">Login</button>
+                    <form onSubmit={handleLogin}>
+                        <label>
+                            Email:
+                            <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </label>
+                        <br />
+                        <label>
+                            Password:
+                            <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </label>
+                        <br />
+                        <button type="submit">Login</button>
                     </form>
                 </div>
                 <div className="col-md-6">
                     <h2>Register</h2>
-                    <form>
-                    <label>
-                        Email:
-                        <input
-                        type="email"
-                        value={registerEmail}
-                        onChange={(e) => setRegisterEmail(e.target.value)}
-                        />
-                    </label>
-                    <br />
-                    <label>
-                        Password:
-                        <input
-                        type="password"
-                        value={registerPassword}
-                        onChange={(e) => setRegisterPassword(e.target.value)}
-                        />
-                    </label>
-                    <br />
-                    <label>
-                        Confirm Password:
-                        <input
-                        type="password"
-                        value={registerConfirmPassword}
-                        onChange={(e) => setRegisterConfirmPassword(e.target.value)}
-                        />
-                    </label>
-                    <br />
-                    <label>
-                        Display Name:
-                        <input
-                        type="text"
-                        value={registerDisplayName}
-                        onChange={(e) => setRegisterDisplayName(e.target.value)}
-                        />
-                    </label>
-                    <br />
-                    <button type="submit">Register</button>
+                    <form onSubmit={handleRegister}>
+                        <label>
+                            Email:
+                            <input
+                            type="email"
+                            value={registerEmail}
+                            onChange={(e) => setRegisterEmail(e.target.value)}
+                            />
+                        </label>
+                        <br />
+                        <label>
+                            Password:
+                            <input
+                            type="password"
+                            value={registerPassword}
+                            onChange={(e) => setRegisterPassword(e.target.value)}
+                            />
+                        </label>
+                        <br />
+                        <label>
+                            Confirm Password:
+                            <input
+                            type="password"
+                            value={registerConfirmPassword}
+                            onChange={(e) => setRegisterConfirmPassword(e.target.value)}
+                            />
+                        </label>
+                        <br />
+                        <label>
+                            Display Name:
+                            <input
+                            type="text"
+                            value={registerDisplayName}
+                            onChange={(e) => setRegisterDisplayName(e.target.value)}
+                            />
+                        </label>
+                        <br />
+                        <button type="submit">Register</button>
                     </form>
                 </div>
             </div>
 
             <button onClick={ loginAsGuest }>Login as Guest</button>
-            <button onClick={ () => testLaravelGet(email) }>Test Get</button>
-            <button onClick={ testLaravelCreate }>Test Create</button>
         </div>
     );
 };
