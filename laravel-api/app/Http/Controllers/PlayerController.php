@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Player;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PlayerController extends Controller
 {
@@ -65,7 +67,10 @@ class PlayerController extends Controller
         ]);
     }
 
-    public function getUser($email) {
-        return (['email' => 'worked']);
+    public function getUser(Request $request) {
+        
+        $email = $request->input('email');
+        $password = $request->input('password');
+        return (['email' => $email, 'password' => $password]);
     }
 }
