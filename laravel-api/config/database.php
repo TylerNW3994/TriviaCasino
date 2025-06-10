@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'sqlite'),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -44,6 +44,7 @@ return [
             'prefix' => '',
             'strict' => true,
             'engine' => null,
+            'debug' => true,
         ],
 
         'player' => [
