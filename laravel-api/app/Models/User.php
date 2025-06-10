@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     protected $connection = 'auth_db';
-    protected $table = 'users';
+    // protected $table = 'users';
 }
