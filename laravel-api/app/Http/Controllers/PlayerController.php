@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Player;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -69,18 +70,14 @@ class PlayerController extends Controller
     }
 
     public function getUser(Request $request) {
-        $results = DB::connection('auth_db')->select('SELECT * FROM users');
-        dd($results);
-        return Response::json($results);
-
         $email = $request->input('email');
         $password = $request->input('password');
         $user = User::where('email', $email)->first();
     
         if ($user && Hash::check($password, $user->password)) {
-            return Response::json(['email' => $user->email, 'password' => $user->password]);
+            return response()->json(['email' => $user->email, 'password' => $user->password]);
         } else {
-            return Response::json(['error' => 'Invalid email or password'], 401);
+            return response()->json(['error' => 'Invalid email or password'], 401);
         }
     }
 }
