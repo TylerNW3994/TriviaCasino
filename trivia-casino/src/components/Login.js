@@ -66,6 +66,23 @@ const Login = () => {
             console.error("Passwords do not match!");
             return;
         }
+
+        let registerData = {
+            email : registerEmail,
+            password : registerPassword,
+            display_name : registerDisplayName
+        };
+
+        fetch('http://localhost:8000/api/player/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(registerData)
+        })
+            .then((response) => response.json())
+            .then((data) => console.log(data))
+            .catch((error) => console.error(error));
     }
 
     return (
