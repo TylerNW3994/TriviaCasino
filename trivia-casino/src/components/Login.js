@@ -44,7 +44,7 @@ const Login = () => {
 			password: password,
 		};
 
-		fetch("http://localhost:8000/api/player/getUser", {
+		fetch("http://localhost:8000/api/players/getUser", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -78,7 +78,7 @@ const Login = () => {
 			display_name: registerDisplayName,
 		};
 
-		fetch("http://localhost:8000/api/player/create", {
+		fetch("http://localhost:8000/api/players/create", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
