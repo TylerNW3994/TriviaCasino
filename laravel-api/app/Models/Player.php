@@ -8,7 +8,7 @@ class Player extends Model
 {
     protected $table = 'players';
     protected $primaryKey = 'id';
-    protected $connection = 'mysql';
+    protected $connection = 'player';
 
     public function user()
     {
