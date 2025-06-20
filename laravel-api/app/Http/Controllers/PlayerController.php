@@ -14,15 +14,16 @@ class PlayerController extends Controller
 {
     public function createPlayer(Request $request)
     {
-        $user = User::find($request->input('user_id'));
-
-        if (!$user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
+        $user = new User();
+        $user->email = $request->input('email');
+        $user->password_hash = Hash::make($request->password);
+        $user->username = $request->input('display_name');
+        $user->save();
 
         $player = new Player();
         $player->player_id = $user->id;
-        $player->display_name = $request->input('display_name');
+        $player->display_name = $user->username;
+        $player->chips = 1000;
         $player->save();
 
         return response()->json(['success' => true, 'player_id' => $player->id]);
